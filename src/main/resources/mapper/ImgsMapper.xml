@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bukkit.sip.orm.mapper.ImgsMapper">
+    <cache/>
+    <resultMap id="BaseResultMap" type="cn.bukkit.sip.orm.entity.Imgs">
+        <!--@mbg.generated-->
+        <!--@Table imgs-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="size" jdbcType="INTEGER" property="size"/>
+        <result column="owner" jdbcType="VARCHAR" property="owner"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id,
+        `name`,
+        `path`,
+        `size`,
+        `owner`
+    </sql>
+</mapper>
