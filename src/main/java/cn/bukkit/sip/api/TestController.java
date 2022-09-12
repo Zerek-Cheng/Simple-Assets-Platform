@@ -1,7 +1,11 @@
 package cn.bukkit.sip.api;
 
 import cn.bukkit.sip.exception.RestException;
+import cn.bukkit.sip.orm.ImgService;
+import cn.bukkit.sip.orm.UserService;
+import cn.bukkit.sip.orm.entity.Img;
 import cn.bukkit.sip.pojo.RestData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,5 +36,20 @@ public class TestController {
             builder.data(principal);
         }
         return builder.build();
+    }
+
+    @Autowired
+    ImgService imgService;
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/test")
+    public Object test() {
+        Img img = imgService.getById(1568515003021197313L);
+        System.out.println("img = " + img);
+        System.out.println("img.getUser() = " + img.getUser());
+        System.out.println("img.getUser().getData() = " + img.getUser().getData());
+        System.out.println("user = " + img.getUser());
+        return null;
     }
 }

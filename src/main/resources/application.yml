@@ -1,3 +1,9 @@
 spring:
   profiles:
     active: dev
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: cn.bukkit.sip.orm.entity
+  configuration:
+    cache-enabled: true
+  type-handlers-package: cn.bukkit.sip.orm.handler

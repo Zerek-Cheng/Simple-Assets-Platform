@@ -2,7 +2,10 @@ package cn.bukkit.sip;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -19,13 +22,20 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
-@EnableCaching
-@EnableAsync
+@EnableCaching(proxyTargetClass = true)
+@EnableAsync(proxyTargetClass = true)
 @EnableRedisHttpSession
 public class SimpleImgPlatformApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SimpleImgPlatformApplication.class, args);
+    }
+
+
+    ObjectMapper objectMapper() {
+        return new ObjectMapper() {{
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        }};
     }
 
     @Bean
@@ -49,6 +59,7 @@ public class SimpleImgPlatformApplication {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         return interceptor;
     }
 

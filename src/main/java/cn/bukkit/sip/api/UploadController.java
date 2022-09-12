@@ -1,7 +1,8 @@
 package cn.bukkit.sip.api;
 
-import cn.bukkit.sip.orm.ImgsService;
-import cn.bukkit.sip.orm.entity.Imgs;
+import cn.bukkit.sip.orm.ImgService;
+import cn.bukkit.sip.orm.UserService;
+import cn.bukkit.sip.orm.entity.Img;
 import cn.bukkit.sip.pojo.RestData;
 import cn.bukkit.sip.security.CasdoorAuthenticationToken;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +20,14 @@ public class UploadController {
     String path;
 
     @Resource
-    ImgsService imgsService;
+    ImgService imgService;
+
+    @Resource
+    UserService userService;
 
     @RequestMapping(path = "/upload")
     public RestData upload(@RequestPart(value = "file", required = false) MultipartFile fileReq, CasdoorAuthenticationToken token) {
-        Imgs img = imgsService.uploaderImg(fileReq, token.getPrincipal().getId());
+        Img img = imgService.uploaderImg(fileReq, userService.getById(token.getPrincipal().getId()));
         return RestData.builder().data(img).build();
     }
 }
