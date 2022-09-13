@@ -2,16 +2,7 @@
   <el-row id="container">
     <div id="background">
       <ul class="circles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
+        <li v-for="item in 10" :key="item"></li>
       </ul>
     </div>
     <WebHead></WebHead>
@@ -39,24 +30,19 @@ export default {
   components: {
     WebHead, WebBottom
   },
-  created() {
-    this.$store.commit('csrf', Cookies.get('XSRF-TOKEN'));
-    this.$axios.request({
-      method: 'get',
-      url: '/api/test/user',
-      responseType: 'json'
-    }).then((response) => {
-      const result = response.data;
-      if (result.code === -1) {
-        this.$store.commit('login', false);
-        localStorage.removeItem('user');
-      } else {
-        this.$store.commit('login', true);
-        localStorage.setItem('user', JSON.stringify(result.data.principal));
+  methods: {
+    async updateData() {
+      const csrfData = await this.$api.testCsrf();
+      this.$store.commit('csrf', csrfData.data.data.token ? csrfData.data.data.token : Cookies.get('XSRF-TOKEN'));
+      const userData = await this.$api.testUser();
+      if (userData.data.code === 0) {
+        const user = userData.data.data.principal
+        this.$store.commit('user', user);
       }
-    }).catch((error) => {
-      this.$message.error(error)
-    });
+    }
+  },
+  created() {
+    this.updateData();
   }
 }
 </script>
@@ -65,7 +51,6 @@ export default {
 
 #container {
   min-height: 100%;
-
 }
 
 #footer {

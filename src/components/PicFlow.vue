@@ -1,37 +1,16 @@
 <template>
   <el-col :md="{span:16,push:4}" :xs="24" id="imgs">
-    <el-image v-for="item in this.$data.imgUrl.slice(0,this.size*this.page)" :key="item.id"
-              :src="`/api/img/get/${item.id}`" :preview-src-list="[`/api/img/get/${item.id}`]" fit="scale-down">
-      <div slot="placeholder" class="image-slot" style="width: 80%">
-        <el-skeleton animated :rows="3" :throttle="500">
+    <el-image v-for="item in this.$data.imgUrl" :key="item.id"
+              :src="`/api/img/get/${item.id}`" :preview-src-list="[`/api/img/get/${item.id}`]" fit="fit">
+      <div slot="placeholder" class="image-slot">
+        <el-skeleton animated :rows="3" :throttle="100">
           <el-skeleton-item variant="image"></el-skeleton-item>
         </el-skeleton>
       </div>
     </el-image>
     <el-image fit="fill" v-if="!this.imgUrl">
       <div slot="placeholder" class="image-slot" style="width: 80%">
-        <el-skeleton animated :rows="3" :throttle="500">
-          <el-skeleton-item variant="image"></el-skeleton-item>
-        </el-skeleton>
-      </div>
-    </el-image>
-    <el-image fit="fill" v-if="!this.imgUrl">
-      <div slot="placeholder" class="image-slot" style="width: 80%">
-        <el-skeleton animated :rows="3" :throttle="500">
-          <el-skeleton-item variant="image"></el-skeleton-item>
-        </el-skeleton>
-      </div>
-    </el-image>
-    <el-image fit="fill" v-if="!this.imgUrl">
-      <div slot="placeholder" class="image-slot" style="width: 80%">
-        <el-skeleton animated :rows="3" :throttle="500">
-          <el-skeleton-item variant="image"></el-skeleton-item>
-        </el-skeleton>
-      </div>
-    </el-image>
-    <el-image fit="fill" v-if="!this.imgUrl">
-      <div slot="placeholder" class="image-slot" style="width: 80%">
-        <el-skeleton animated :rows="3" :throttle="500">
+        <el-skeleton animated :rows="3" :throttle="100">
           <el-skeleton-item variant="image"></el-skeleton-item>
         </el-skeleton>
       </div>
@@ -47,7 +26,7 @@ export default {
       imgUrl: [],
       size: 50,
       page: 1,
-      showImgs: false
+      hasMore: true,
     }
   },
   methods: {
@@ -57,7 +36,7 @@ export default {
         url: '/api/img/list',
         data: {
           current: this.page,
-          size: 3
+          size: 12
         }
       }).then((res) => this.imgUrl.push(...res.data.data))
     },
@@ -72,21 +51,24 @@ export default {
         url: '/api/img/list',
         data: {
           current: this.page,
-          size: 2
+          size: 12
         }
-      }).then((res) => this.imgUrl.push(...res.data.data))
+      }).then((res) => {
+        if (res.data.data.length < this.size) {
+          window.removeEventListener('scroll', this.tGetMore, true)
+        }
+        this.imgUrl.push(...res.data.data)
+      })
       console.info(`加载第${this.page}页`)
-    }
+    },
   },
   mounted() {
+    this.tGetMore = this._.throttle(this.getMore, 1500, {trailing: false})// 7节流
     this.loadImgs()
-    window.addEventListener('scroll', this.getMore, true)
-    this.$nextTick(() => {
-      this.showImgs = true
-    })
+    window.addEventListener('scroll', this.tGetMore, true)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.getMore, true)
+    window.removeEventListener('scroll', this.tGetMore, true)
   }
 }
 </script>

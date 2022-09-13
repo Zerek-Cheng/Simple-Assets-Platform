@@ -80,8 +80,9 @@ module.exports = defineConfig({
                 args[0].chunkFilename = 'css/[name]-[contenthash:8].css'
                 return args;
             })
+        } else {
+            config.devtool('source-map')
         }
-        config.devtool('source-map')
         config.output.filename('js/[name]-[contenthash:8].js').chunkFilename('js/[name]-[contenthash:8].js').end()
     },
 })

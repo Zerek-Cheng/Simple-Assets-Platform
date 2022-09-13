@@ -6,7 +6,7 @@
           <h1>图片上传</h1>
         </div>
         <el-alert
-            v-if="!this.$store.state.login"
+            v-if="!this.user"
             id="login-warn"
             title="未登录"
             type="error"
@@ -16,7 +16,7 @@
         <el-divider></el-divider>
         <el-upload
             ref="upload"
-            :disabled="!this.$store.state.login"
+            :disabled="!this.user"
             class="upload"
             drag
             action="/api/upload"
@@ -30,7 +30,7 @@
             <p><i class="el-icon-upload"></i></p>
             将文件拖到此处，或<em>点击这里</em></div>
         </el-upload>
-        <el-button v-if="login" type="success" id="confirm" @click.prevent.stop="confirmUpload">确认上传</el-button>
+        <el-button v-if="this.user" type="success" id="confirm" @click.prevent.stop="confirmUpload">确认上传</el-button>
       </el-card>
     </el-col>
   </el-row>
@@ -43,7 +43,7 @@ export default {
     files: []
   }),
   computed: {
-    ...mapState(['login', 'csrf'])
+    ...mapState(['user', 'csrf'])
   },
   methods: {
     confirmUpload() {

@@ -25,7 +25,7 @@
           </el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :md="4" :xs="24" id="h-right" v-if="!login">
+      <el-col :md="4" :xs="24" id="h-right" v-if="!this.user">
         <el-menu
             :default-active="$route.path"
             id="h-menu-right"
@@ -42,30 +42,30 @@
           </el-menu-item>
         </el-menu>
       </el-col>
-    </el-col>
-    <el-col :md="2" :xs="24" id="h-right" v-if="login"><!--已登录状态-->
-      <el-menu
-          :default-active="$route.path"
-          id="h-menu-user"
-          class="flex-center"
-          mode="horizontal"
-          background-color="transparent"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-        <el-submenu index="/user" popper-class="avatar-submenu" :show-timeout="10" :hide-timeout="10">
-          <template slot="title">
-            <el-avatar :src="user.avatar" shape="square" size="large"/>
-          </template>
-          <el-menu-item index="/price" @click="$router.push('/price')">套餐&费用</el-menu-item>
-          <el-menu-item index="/safe" @click="profile">安全中心</el-menu-item>
-          <el-menu-item index="/logout" @click="logout">退出</el-menu-item>
-        </el-submenu>
-      </el-menu>
+      <el-col :md="2" :xs="24" id="h-right" v-if="this.user"><!--已登录状态-->
+        <el-menu
+            :default-active="$route.path"
+            id="h-menu-user"
+            class="flex-center"
+            mode="horizontal"
+            background-color="transparent"
+            text-color="#fff"
+            active-text-color="#ffd04b">
+          <el-submenu index="/user" popper-class="avatar-submenu" :show-timeout="10" :hide-timeout="10">
+            <template slot="title">
+              <el-avatar :src="this.user.avatar" shape="square" size="large"/>
+            </template>
+            <el-menu-item index="/price" @click="$router.push('/price')">套餐&费用</el-menu-item>
+            <el-menu-item index="/safe" @click="profile">安全中心</el-menu-item>
+            <el-menu-item index="/logout" @click="logout">退出</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-col>
     </el-col>
   </el-row>
 </template>
 <script>
-import {mapGetters, mapState} from 'vuex';
+import {mapGetters} from 'vuex';
 
 export default {
   name: 'WebHead',
@@ -73,19 +73,11 @@ export default {
     input: ''
   }),
   computed: {
-    ...mapState(['login']),
     ...mapGetters(['user'])
   },
   methods: {
     goAuth(type) {
-      this.$axios.request({
-        url: type === 'login' ? '/api/login/goSignin' : '/api/login/goSignup',
-        method: 'post',
-        data: {
-          redirect: `${window.location.origin}/api/login/callback`,
-          callback: window.location.href
-        },
-      }).then((res) => {
+      this.$api.goSignin(type).then((res) => {
         if (res.data.code === 0) {
           window.location.href = res.data.data;
         } else {
@@ -94,29 +86,14 @@ export default {
       });
     },
     logout() {
-      this.$axios.request({
-        url: '/api/login/logout',
-        method: 'post',
-      }).then((res) => {
-        if (res.data.code === 0) {
-          this.$message.success('退出成功');
-          window.location.reload();
-        } else {
-          this.$message.warning('授权服务器异常...请稍后再试...');
-        }
+      this.$api.logout().then((res) => {
+        this.$store.commit('user', null);
+        if (res.data.code === 0) this.$message.success('退出成功');
       });
     },
     profile() {
-      this.$axios.request({
-        url: '/api/login/goProfile',
-        method: 'post',
-      }).then((res) => {
-        if (res.data.code === 0) {
-          const url = res.data.data;
-          window.location.href = url;
-        } else {
-          this.$message.warning('授权服务器异常...请稍后再试...');
-        }
+      this.$api.goProfile().then((res) => {
+        if (res.data.code === 0) window.location.href = res.data.data;
       });
     }
   }
