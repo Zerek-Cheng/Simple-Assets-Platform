@@ -23,8 +23,8 @@ public class SecutiryConfiguration {
                 authorizeRequests
                         .antMatchers("/test/**",
                                 "/login/**",
-                                "/img/get/**",
-                                "/img/list/**").permitAll()
+                                "/img/**",
+                                "/img/**").permitAll()
                         .anyRequest().authenticated()
         ).csrf((csrf) -> csrf.ignoringAntMatchers("/test/**", "/login/callback").csrfTokenRepository(cookieCsrfTokenRepository));
         http.addFilterBefore(casdoorLoginFilter, UsernamePasswordAuthenticationFilter.class);

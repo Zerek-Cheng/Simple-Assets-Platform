@@ -8,12 +8,16 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
@@ -31,7 +35,7 @@ public class SimpleImgPlatformApplication {
         SpringApplication.run(SimpleImgPlatformApplication.class, args);
     }
 
-
+    @Bean
     ObjectMapper objectMapper() {
         return new ObjectMapper() {{
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -40,18 +44,28 @@ public class SimpleImgPlatformApplication {
 
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        // 设置key和value的序列化规则
-        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Object.class));
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        // 设置hashKey和hashValue的序列化规则
-        redisTemplate.setHashKeySerializer(new GenericToStringSerializer<>(Object.class));
-        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-        // 设置支持事物
-        redisTemplate.setEnableTransactionSupport(true);
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        /* 使用Json序列化，默认是JDK序列化 */
+        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        template.setDefaultSerializer(serializer);
+        return template;
+    }
+
+    @Bean
+    public RedisCacheConfiguration redisCacheConfiguration(CacheProperties cacheProperties) {
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+        CacheProperties.Redis redisProperties = cacheProperties.getRedis();
+        if (redisProperties.getTimeToLive() != null)
+            redisCacheConfiguration = redisCacheConfiguration.entryTtl(redisProperties.getTimeToLive());
+        if (redisProperties.getKeyPrefix() != null)
+            redisCacheConfiguration = redisCacheConfiguration.prefixCacheNameWith(redisProperties.getKeyPrefix());
+        if (!redisProperties.isCacheNullValues())
+            redisCacheConfiguration = redisCacheConfiguration.disableCachingNullValues();
+        if (!redisProperties.isUseKeyPrefix()) redisCacheConfiguration = redisCacheConfiguration.disableKeyPrefix();
+        redisCacheConfiguration = redisCacheConfiguration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+
+        return redisCacheConfiguration;
     }
 
     @Bean

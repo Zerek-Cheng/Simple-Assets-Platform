@@ -7,3 +7,16 @@ mybatis-plus:
   configuration:
     cache-enabled: true
   type-handlers-package: cn.bukkit.sip.orm.handler
+web:
+  url: http://192.168.100.114:8080
+  casdoor-callback: ${web.url}/api/login/callback
+  upload:
+    allow-upload:
+      - jpg
+      - jpeg
+      - png
+      - gif
+      - bmp
+      - webp
+      - svg
+      - tiff

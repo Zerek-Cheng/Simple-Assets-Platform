@@ -1,9 +1,8 @@
 package cn.bukkit.sip.security;
 
-import cn.bukkit.sip.orm.UserService;
+import cn.bukkit.sip.orm.UserDaoService;
 import cn.bukkit.sip.orm.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.casbin.casdoor.entity.CasdoorUser;
@@ -31,7 +30,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     HttpSession session;
 
     @Resource
-    UserService userService;
+    UserDaoService userDaoService;
 
     @Resource
     ObjectMapper objectMapper;
@@ -48,7 +47,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Async
     void writeUserInfo(CasdoorAuthenticationToken authenticationToken) throws JsonProcessingException {
         CasdoorUser user = authenticationToken.getPrincipal();
-        this.userService.saveOrUpdate(User.builder().id(user.getId()).data(user).updateTime(LocalDateTime.now()).build());
+        this.userDaoService.saveOrUpdate(User.builder().id(user.getId()).data(user).updateTime(LocalDateTime.now()).build());
         log.debug("{}用户信息更新成功", user.getId());
     }
 }
