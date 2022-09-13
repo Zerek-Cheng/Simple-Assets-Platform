@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import router from './router'
 import store from './store'
+import VueClipboard from 'vue-clipboard2';
 import App from './App.vue'
 import Cookies from 'js-cookie';
 import axios from './axiosInit';
@@ -13,7 +14,8 @@ import backend from './backend';
 
 Vue.config.productionTip = false
 Vue.config.lang = 'zh-CN';
-Vue.use(ElementUI);
+Vue.use(ElementUI)
+Vue.use(VueClipboard)
 
 Vue.prototype._ = _;
 Vue.prototype.$axios = axios;
@@ -21,7 +23,7 @@ Vue.prototype.$api = backend(axios);
 
 Vue.prototype.$axios.interceptors.request.use((config) => {
     if (config.method === 'post') config.data = qs.stringify(config.data);
-    if (!Cookies.get('XSRF-TOKEN')) Vue.prototype.$api.testCsrf().then(() => store.commit('csrf', Cookies.get('XSRF-TOKEN')))
+    if (!Cookies.get('XSRF-TOKEN')) Vue.prototype.$api.getCsrf().then(() => store.commit('csrf', Cookies.get('XSRF-TOKEN')))
     if (Cookies.get('XSRF-TOKEN')) config.headers['X-XSRF-TOKEN'] = store.getters.csrf;
     return config;
 }, (error) => Vue.prototype.$message.error(error))

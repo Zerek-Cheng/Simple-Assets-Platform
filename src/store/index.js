@@ -17,7 +17,7 @@ export default new Vuex.Store({
     },
     mutations: {
         user(state, user) {
-            if (user === null) {
+            if (user == null) {
                 localStorage.removeItem('user');
                 state.user = null;
                 return;

@@ -1,7 +1,5 @@
 <template>
-  <el-row :xs="24" id="content">
-    <PicFlow/>
-  </el-row>
+  <PicFlow/>
 </template>
 <script>
 export default {

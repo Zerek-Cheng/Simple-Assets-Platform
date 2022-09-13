@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     goAuth(type) {
-      this.$api.goSignin(type).then((res) => {
+      this.$api.getLogin(type).then((res) => {
         if (res.data.code === 0) {
           window.location.href = res.data.data;
         } else {
@@ -92,7 +92,7 @@ export default {
       });
     },
     profile() {
-      this.$api.goProfile().then((res) => {
+      this.$api.getProfile().then((res) => {
         if (res.data.code === 0) window.location.href = res.data.data;
       });
     }

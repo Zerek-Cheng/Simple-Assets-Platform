@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :md="{span:14,push:5}" :xs="{span:22,push:1}">
+    <el-col :md="{span:16,push: 4}" :xs="{span:22,push:1}">
       <el-card class="box-card">
         <div slot="header">
           <h1>图片上传</h1>
@@ -18,13 +18,17 @@
             ref="upload"
             :disabled="!this.user"
             class="upload"
-            drag
             action="/api/upload"
-            :file-list="files"
             list-type="picture"
+            :file-list="files"
             :limit="10"
             :auto-upload="false"
+            :with-credentials="true"
             :headers="{'X-XSRF-TOKEN': csrf}"
+            :on-success="onSuccess"
+            :on-preview="onPreview"
+            accept=".jpg,.jpeg,.png,.gif,.bmp,.webp,.svg,.tiff"
+            drag
             multiple>
           <div class="el-upload__text">
             <p><i class="el-icon-upload"></i></p>
@@ -49,9 +53,19 @@ export default {
     confirmUpload() {
       this.$refs.upload.submit()
     },
-  },
-  mounted() {
-    console.log(this.$store.state.csrf)
+    onSuccess(res, file) {
+      if (res.code === -1) {
+        file.status = 'error'
+        this.$message.error(res.message)
+      }
+    },
+    onPreview(file) {
+      if (!file.response || file.response.code !== 0) return;
+      window.open(this.$router.resolve({
+        name: 'pic-info',
+        params: {pic: file.response.data.id}
+      }).href)
+    }
   }
 }
 </script>

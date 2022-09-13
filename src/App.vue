@@ -32,13 +32,10 @@ export default {
   },
   methods: {
     async updateData() {
-      const csrfData = await this.$api.testCsrf();
+      const csrfData = await this.$api.getCsrf();
       this.$store.commit('csrf', csrfData.data.data.token ? csrfData.data.data.token : Cookies.get('XSRF-TOKEN'));
-      const userData = await this.$api.testUser();
-      if (userData.data.code === 0) {
-        const user = userData.data.data.principal
-        this.$store.commit('user', user);
-      }
+      const userData = await this.$api.getUserInfo();
+      this.$store.commit('user', userData.data.code === 0 ? userData.data.data.principal : null);
     }
   },
   created() {

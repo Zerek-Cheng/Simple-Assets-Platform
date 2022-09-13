@@ -1,70 +1,76 @@
 <template>
-  <el-col :md="{span:16,push:4}" :xs="24" id="imgs">
-    <el-image v-for="item in this.$data.imgUrl" :key="item.id"
-              :src="`/api/img/get/${item.id}`" :preview-src-list="[`/api/img/get/${item.id}`]" fit="fit">
-      <div slot="placeholder" class="image-slot">
-        <el-skeleton animated :rows="3" :throttle="100">
-          <el-skeleton-item variant="image"></el-skeleton-item>
-        </el-skeleton>
-      </div>
-    </el-image>
-    <el-image fit="fill" v-if="!this.imgUrl">
-      <div slot="placeholder" class="image-slot" style="width: 80%">
-        <el-skeleton animated :rows="3" :throttle="100">
-          <el-skeleton-item variant="image"></el-skeleton-item>
-        </el-skeleton>
-      </div>
-    </el-image>
-  </el-col>
+  <el-row id="imgs">
+    <el-drawer
+        title="按ESC建或右边的×关闭"
+        size="auto"
+        :visible.sync="show"
+        direction="ttb" id="drawer">
+      <span>
+        <PicInfo :pic="showId" @back="show=false;showId=undefined"/>
+      </span>
+    </el-drawer>
+    <el-col :md="{span:22,push:1}" :xs="24" v-if="this.imgUrl.length">
+      <el-image
+          v-for="item in this.$data.imgUrl" :key="item.id"
+          :src="`/api/img/get/${item.id}`"
+          @click="show=true;showId=item.id"
+          fit="contain" class="single-img" lazy>
+        <div slot="placeholder" class="image-slot">
+          <el-skeleton animated :rows="3" :throttle="100">
+            <el-skeleton-item variant="image"></el-skeleton-item>
+          </el-skeleton>
+        </div>
+      </el-image>
+    </el-col>
+
+    <el-col :md="{span:22,push:1}" :xs="24" v-if="!this.imgUrl.length">
+      <el-col :md="5" :xs="24" v-for="item in this.$data.imgUrl" :key="item.id">
+        <el-image src="/api/img/get/unknown">
+          <div slot="placeholder" class="image-slot" style="width: 80%">
+            <el-skeleton animated :rows="3" :throttle="100">
+              <el-skeleton-item variant="image"></el-skeleton-item>
+            </el-skeleton>
+          </div>
+        </el-image>
+      </el-col>
+    </el-col>
+  </el-row>
 </template>
 <script>
 export default {
   name: 'PicFlow',
-  components: {},
   data() {
     return {
       imgUrl: [],
-      size: 50,
+      size: 20,
       page: 1,
-      hasMore: true,
+      show: false,
+      showId: undefined,
     }
   },
+  components: {
+    PicInfo: () => import('./PicInfo.vue')
+  },
   methods: {
-    loadImgs() {
-      this.$axios.request({
-        method: 'post',
-        url: '/api/img/list',
-        data: {
-          current: this.page,
-          size: 12
-        }
-      }).then((res) => this.imgUrl.push(...res.data.data))
+    loadImngList() {
+      this.$api.getImgList(this.page, this.size).then((res) => {
+        this.imgUrl.push(...res.data.data)
+      })
     },
     getMore() {
       const bottom = document.documentElement.offsetHeight - window.innerHeight - document.documentElement.scrollTop
-      if (0.03 * window.innerHeight < bottom && bottom !== 0) {
-        return;
-      }
+      if (0.03 * window.innerHeight < bottom && bottom !== 0) return;
       this.page++
-      this.$axios.request({
-        method: 'post',
-        url: '/api/img/list',
-        data: {
-          current: this.page,
-          size: 12
-        }
-      }).then((res) => {
-        if (res.data.data.length < this.size) {
-          window.removeEventListener('scroll', this.tGetMore, true)
-        }
+      this.$api.getImgList(this.page, this.size).then((res) => {
+        if (res.data.data.length < this.size) window.removeEventListener('scroll', this.tGetMore, true)
         this.imgUrl.push(...res.data.data)
       })
-      console.info(`加载第${this.page}页`)
+      console.debug(`加载第${this.page}页`)
     },
   },
-  mounted() {
-    this.tGetMore = this._.throttle(this.getMore, 1500, {trailing: false})// 7节流
-    this.loadImgs()
+  beforeMount() {
+    this.tGetMore = this._.debounce(this.getMore, 100)
+    this.loadImngList()
     window.addEventListener('scroll', this.tGetMore, true)
   },
   destroyed() {
@@ -72,27 +78,27 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
-#imgs {
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: flex-start;
+<style lang="scss">
+#drawer {
+  overflow-y: auto;
 
-  .el-image {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid gray;
-    min-width: 20%;
-    height: 200px;
-    margin: 10px;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
-
-@media screen and (max-width: 768px) {
-  #imgs .el-image {
-    min-width: 85%;
+</style>
+<style scoped lang="scss">
+.single-img {
+  width: 20%;
+  height: 25vh;
+  margin: 0.25%;
+  border: 1px solid gray;
+  background-color: rgba(143, 141, 141, 0.15);
+  @media screen and (max-width: 768px) {
+    width: 80%;
+    height: 50vh;
+    margin: 1% auto;
+    border: 1px solid gray;
   }
 }
 </style>

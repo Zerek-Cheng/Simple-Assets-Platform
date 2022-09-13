@@ -7,21 +7,23 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        components: {
-            default: () => import(/* webpackChunkName: "home" */ '../views/HomeView.vue')
-        },
+        component: () => import(/* webpackChunkName: "home" */ '../views/HomeView.vue'),
     },
     {
         path: '/pics',
         name: 'pics',
-        components: {
-            default: () => import(/* webpackChunkName: "pics" */ '../views/PicView.vue')
-        },
+        component: () => import(/* webpackChunkName: "pics" */ '../views/PicView.vue'),
     },
     {
         path: '/upload',
         name: 'upload',
         component: () => import(/* webpackChunkName: "about" */ '../views/UploadView.vue')
+    },
+    {
+        path: '/pic-info/:pic',
+        name: 'pic-info',
+        component: () => import(/* webpackChunkName: "about" */ '../views/PicInfoView.vue'),
+        props: true
     }
 ]
 

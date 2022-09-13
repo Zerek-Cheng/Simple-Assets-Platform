@@ -16,6 +16,7 @@
     "lodash": "^4.17.21",
     "qs": "^6.11.0",
     "vue": "^2.7.10",
+    "vue-clipboard2": "^0.3.3",
     "vue-router": "^3.5.1",
     "vue2-waterfall": "^3.0.1",
     "vuex": "=3.6.2"

@@ -1,24 +1,20 @@
 export default (axios) => {
     return {
-        localUser(user) {
-            if (user !== null) localStorage.setItem('user', JSON.stringify(user));
-            return user === null ? JSON.parse(localStorage.getItem('user')) : user;
-        },
-        testCsrf() {
+        getCsrf() {
             return axios.request({
                 url: '/api/test/csrf',
                 method: 'get',
                 responseType: 'json'
             })
         },
-        testUser() {
+        getUserInfo() {
             return axios.request({
                 method: 'get',
                 url: '/api/test/user',
                 responseType: 'json'
             })
         },
-        goSignin(type = 'login') {
+        getLogin(type = 'login') {
             return axios.request({
                 url: type === 'login' ? '/api/login/goSignin' : '/api/login/goSignup',
                 method: 'post',
@@ -28,7 +24,7 @@ export default (axios) => {
                 },
             })
         },
-        goProfile() {
+        getProfile() {
             return axios.request({
                 url: '/api/login/goProfile',
                 method: 'post',
@@ -38,6 +34,25 @@ export default (axios) => {
             return axios.request({
                 url: '/api/login/logout',
                 method: 'post',
+            })
+        },
+        getImgUrl(id) {
+            return `/api/img/get/${id}`
+        },
+        getImgList(page = 1, length = 12) {
+            return axios.request({
+                method: 'post',
+                url: '/api/img/list',
+                data: {
+                    current: page,
+                    size: length
+                }
+            })
+        },
+        getImgInfo(id) {
+            return axios.request({
+                method: 'get',
+                url: `/api/img/info/${id}`
             })
         }
     };
