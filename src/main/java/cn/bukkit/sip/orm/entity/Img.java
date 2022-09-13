@@ -37,6 +37,7 @@ public class Img implements Serializable {
     @Builder.Default
     @TableLogic
     @TableField(value = "deleted")
+    @JsonIgnore
     private Boolean deleted = false;
 
     @JsonIgnore

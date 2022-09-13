@@ -7,17 +7,22 @@ import cn.bukkit.sip.pojo.RestData;
 import cn.bukkit.sip.security.CasdoorAuthenticationToken;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.casbin.casdoor.entity.CasdoorUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+
 @RequestMapping("/img")
 @RestController
+@Validated
 public class ImgController {
 
     @Value("${spring.servlet.multipart.location}")
@@ -51,10 +56,7 @@ public class ImgController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public RestData imgList(Integer current, Integer size) {
-        if (current == null || size == null || current < 1 || size > 20 || size < 1) {
-            throw RestException.builder().code(-1).message("参数错误").build();
-        }
+    public RestData imgList(@DecimalMin("1") Integer current, @DecimalMax("20") Integer size) {
         Page<Img> page = this.imgService.page(new Page<>(current, size), Wrappers.<Img>lambdaQuery().orderByDesc(Img::getId));
         return RestData.builder().data(page.getRecords()).build();
     }

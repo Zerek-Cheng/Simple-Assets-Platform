@@ -26,7 +26,7 @@ public class UploadController {
     UserService userService;
 
     @RequestMapping(path = "/upload")
-    public RestData upload(@RequestPart(value = "file", required = false) MultipartFile fileReq, CasdoorAuthenticationToken token) {
+    public RestData upload(@RequestPart(value = "file") MultipartFile fileReq, CasdoorAuthenticationToken token) {
         Img img = imgService.uploaderImg(fileReq, userService.getById(token.getPrincipal().getId()));
         return RestData.builder().data(img).build();
     }
