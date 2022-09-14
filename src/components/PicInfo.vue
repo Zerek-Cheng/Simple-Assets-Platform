@@ -1,7 +1,7 @@
 <template>
   <el-row style="width: 100%">
-    <el-card v-if="this.info">
-      <el-col :md="11" :xs="24">
+    <el-card v-if="this.info" id="card">
+      <el-col :md="11" :xs="24" id="image">
         <el-image :src="this.$api.getImgUrl(pic)" style="width: 100%;height: 100%;text-align: center"/>
       </el-col>
       <el-col :md="{span:12,push:1}" :xs="24" id="info" style="padding-bottom: 1vh">
@@ -65,8 +65,23 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss">
 #info .el-descriptions__header {
   justify-content: center;
+}
+
+#card .el-card__body {
+  display: inline-flex;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+}
+</style>
+<style scoped>
+
+
+#image {
+  height: 100%;
 }
 </style>
