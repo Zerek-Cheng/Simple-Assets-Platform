@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "cross-env NODE_ENV=development vue-cli-service serve && webpack-dev-server",
+    "serve": "cross-env NODE_ENV=production vue-cli-service serve && webpack-dev-server",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "report": "vue-cli-service build --report"
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "core-js": "^3.25.0",
+    "core-js": "^3.25.1",
     "element-ui": "^2.15.9",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
@@ -33,15 +33,15 @@
     "babel-plugin-component": "^1.1.1",
     "cross-env": "^7.0.3",
     "eslint": "=8.22",
-    "eslint-config-ali": "^14.0.1",
+    "eslint-config-ali": "^14.0.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^9.4.0",
-    "sass": "^1.54.8",
+    "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
     "style-resources-loader": "^1.5.0",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.7.10",
-    "webpack-dev-server": "^4.10.1"
+    "webpack-dev-server": "^4.11.0"
   },
   "eslintConfig": {
     "root": true,

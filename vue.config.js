@@ -11,7 +11,9 @@ const cdn = {
         'https://cdn.jsdelivr.net/npm/vue-router@3.6.4/dist/vue-router.min.js',
         // vuex
         'https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js',
-        'https://unpkg.com/element-ui/lib/index.js'
+        'https://unpkg.com/element-ui/lib/index.js',
+        'https://cdn.jsdelivr.net/npm/axios@0.27.2/dist/axios.min.js',
+        'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
     ]
 }
 
@@ -26,7 +28,7 @@ module.exports = defineConfig({
             filename: 'index.html',
             // 当使用 title 选项时，
             // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
-            title: '标题',
+            title: 'Simple Assets Platform - Demo',
             // 在这个页面中包含的块，默认情况下会包含
             // 提取出来的通用 chunk 和 vendor chunk。
             chunks: ['chunk-vendors', 'chunk-common', 'index']
@@ -36,11 +38,11 @@ module.exports = defineConfig({
         extract: process.env.NODE_ENV === 'production',
         loaderOptions: {
             sass: {
-                additionalData: '@import "~@/assets/scss/variables.scss";'
+                additionalData: '@import "~@/variables.scss";'
             }
         }
     },
-    transpileDependencies: true,
+    transpileDependencies: false, // 是否编译node_modules
     devServer: {
         port: 8080,
         hot: true,
@@ -61,6 +63,8 @@ module.exports = defineConfig({
                 'vue-router': 'VueRouter',
                 vue: 'Vue',
                 vuex: 'Vuex',
+                axios: 'axios',
+                lodash: '_'
             })
             config.plugin('html-index')
                 .tap((args) => {

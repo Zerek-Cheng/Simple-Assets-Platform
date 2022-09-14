@@ -5,7 +5,7 @@
         <el-carousel-item v-for="item in 4" :key="item">
           <el-image draggable="false"
                     style="width: 100%; height: 100%;"
-                    :src="require(`@/assets/imgs/home-${item}.png`)"
+                    :src="`/assets/img/home-${item}.jpg`"
                     fit="cover"/>
         </el-carousel-item>
       </el-carousel>
@@ -15,7 +15,7 @@
         <el-carousel-item v-for="item in 4" :key="item">
           <el-image draggable="false"
                     style="width: 100%; height: 100%;"
-                    :src="require(`@/assets/imgs/home-${item}.png`)"
+                    :src="`/assets/img/home-${item}.jpg`"
                     fit="cover"/>
         </el-carousel-item>
       </el-carousel>

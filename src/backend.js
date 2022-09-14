@@ -1,4 +1,6 @@
-export default (axios) => {
+import axios from 'axios';
+
+export default (http) => {
     return {
         getCsrf() {
             return axios.request({
@@ -8,14 +10,14 @@ export default (axios) => {
             })
         },
         getUserInfo() {
-            return axios.request({
+            return http.request({
                 method: 'get',
                 url: '/api/test/user',
                 responseType: 'json'
             })
         },
         getLogin(type = 'login') {
-            return axios.request({
+            return http.request({
                 url: type === 'login' ? '/api/login/goSignin' : '/api/login/goSignup',
                 method: 'post',
                 data: {
@@ -25,13 +27,13 @@ export default (axios) => {
             })
         },
         getProfile() {
-            return axios.request({
+            return http.request({
                 url: '/api/login/goProfile',
                 method: 'post',
             })
         },
         logout() {
-            return axios.request({
+            return http.request({
                 url: '/api/login/logout',
                 method: 'post',
             })
@@ -40,7 +42,7 @@ export default (axios) => {
             return `/api/img/get/${id}`
         },
         getImgList(page = 1, length = 12) {
-            return axios.request({
+            return http.request({
                 method: 'post',
                 url: '/api/img/list',
                 data: {
@@ -50,7 +52,7 @@ export default (axios) => {
             })
         },
         getImgInfo(id) {
-            return axios.request({
+            return http.request({
                 method: 'get',
                 url: `/api/img/info/${id}`
             })
