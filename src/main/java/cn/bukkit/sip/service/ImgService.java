@@ -9,6 +9,7 @@ import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.crypto.digest.DigestUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ import java.util.Objects;
 
 @Service
 @Data
+@ConfigurationProperties(prefix = "web.upload")
 public class ImgService {
     @Value("${spring.servlet.multipart.location}")
     String path;

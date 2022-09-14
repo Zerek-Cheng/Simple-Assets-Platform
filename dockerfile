@@ -10,6 +10,6 @@ COPY --from=build /app/target/lib/ /app/lib
 
 WORKDIR /app
 
-EXPOSE 8080
+EXPOSE 8081
 
-CMD ["java", "-jar", "SimpleImgPlatform.jar"]
+ENTRYPOINT ["java", "-jar", "SimpleImgPlatform.jar"]
