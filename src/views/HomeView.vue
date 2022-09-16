@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :md="24" :xs="0" class="hidden-sm-and-down">
+    <el-col :span="24" class="hidden-sm-and-down">
       <el-carousel :interval="5000" arrow="always" height="40vh" type="card" id="img-md" ref="imgmd">
         <el-carousel-item v-for="item in 4" :key="item">
           <el-image draggable="false"
@@ -10,7 +10,7 @@
         </el-carousel-item>
       </el-carousel>
     </el-col>
-    <el-col :xs="24" :md="0" class="hidden-md-and-up">
+    <el-col :span="24" class="hidden-md-and-up">
       <el-carousel :interval="5000" arrow="always" height="30vh" id="img-xs" ref="imgxs">
         <el-carousel-item v-for="item in 4" :key="item">
           <el-image draggable="false"
@@ -29,13 +29,12 @@
       <el-card shadow="hover">
         <i class="el-icon-bank-card"/>
         <b>低成本</b>
-        <p>支持按量付费模式，按实际使用量付费，无需提前一次性投入；无需运维人员与托管费用，0成本运维
-        </p>
+        <p>支持按量付费模式，按实际使用量付费，无需提前一次性投入；无需运维人员与托管费用，0成本运维</p>
       </el-card>
       <el-card shadow="hover">
         <i class="el-icon-cpu"/>
         <b>QOS 99.95%</b>
-        <p>如服务可用性低于99.95%，用户可获得月度服务费10%、25%、100%不等的赔偿。</p>
+        <p>如服务可用性低于99.95%，用户可获得10%、25%、100%不等的赔偿。</p>
       </el-card>
       <el-card shadow="hover">
         <i class="el-icon-chat-dot-square"/>
@@ -61,7 +60,6 @@ export default {
       };
       // 手指按下
       box.addEventListener('touchstart', (e) => {
-        // 手指点击位置的X坐标
         startPoint = e.changedTouches[0].pageX;
       });
       // 手指滑动

@@ -41,7 +41,6 @@ export default {
           type: 'error'
         });
       });
-      // navigator.clipboard.writeText(event.currentTarget.children[0].value).then(() => ))
     }
   },
   beforeMount() {
@@ -66,8 +65,12 @@ export default {
 }
 </script>
 <style lang="scss">
-#info .el-descriptions__header {
-  justify-content: center;
+#info {
+  align-self: flex-start;
+
+  .el-descriptions__header {
+    justify-content: center;
+  }
 }
 
 #card .el-card__body {

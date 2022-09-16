@@ -1,4 +1,4 @@
-name: Build and Push The Docker Image
+name: Docker Build
 on:
   workflow_dispatch:
     inputs:
@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: zerek00/simple_assets_platform:${{ inputs.tags }},zerek00/simple_assets_platform:latest
+          tags: zerek00/simple-assets-platform-template:${{ inputs.tags }},zerek00/simple-assets-platform-template:latest
