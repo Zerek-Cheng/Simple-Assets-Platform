@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: zerek00/simple_assets_platform_backend:${{ inputs.tags }},zerek00/simple_assets_platform_backend:latest
+          tags: zerek00/simple-assets-platform:${{ inputs.tags }},zerek00/simple-assets-platform:latest

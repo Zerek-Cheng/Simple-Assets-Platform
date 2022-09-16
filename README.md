@@ -1,33 +1,36 @@
-# Simple Assets Platform 静态资源托管系统/图床系统
+# Simple Assets Platform /  静态资源托管系统/图床系统
 
 ---
 
 ### **更加灵活的图片、静态资源存放浏览系统**
 #### **More flexible image and static resource storage and browsing system**
-**Backend:**
-![](https://github.com/Zerek-Cheng/Simple-Assets-Platform/actions/workflows/docker.yml/badge.svg?branch=master)
-[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zerek00/simple_assets_platform_backend)](https://hub.docker.com/repository/docker/zerek00/simple_assets_platform_backend)
+
+**Backend :**
+[![](https://github.com/Zerek-Cheng/Simple-Assets-Platform/actions/workflows/docker.yml/badge.svg?branch=master)](https://hub.docker.com/repository/docker/zerek00/simple-assets-platform)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zerek00/simple-assets-platform)](https://hub.docker.com/repository/docker/zerek00/simple-assets-platform)
 
 **Template:**
-![](https://github.com/Zerek-Cheng/Simple-Assets-Platform/actions/workflows/docker.yml/badge.svg?branch=master-template)
-[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zerek00/simple_assets_platform)](https://hub.docker.com/repository/docker/zerek00/simple_assets_platform)
+[![](https://github.com/Zerek-Cheng/Simple-Assets-Platform/actions/workflows/docker.yml/badge.svg?branch=master-template)](https://hub.docker.com/repository/docker/zerek00/simple-assets-platform-template)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/zerek00/simple-assets-platform-template)](https://hub.docker.com/repository/docker/zerek00/simple-assets-platform-template)
 
 ![](https://img.shields.io/github/languages/code-size/Zerek-Cheng/Simple-Assets-Platform?style=for-the-badge)
 ![](https://img.shields.io/github/stars/Zerek-Cheng/Simple-Assets-Platform?style=for-the-badge)
 ![](https://img.shields.io/github/license/Zerek-Cheng/Simple-Assets-Platform?style=for-the-badge)
 
-![](https://starchart.cc/Zerek-Cheng/Simple-Assets-Platform.svg)
+![](https://github.com/Zerek-Cheng/Simple-Assets-Platform/raw/master/show.jpg)
 
-### 安装过程 Install Steps：
-> Pre-Install: [Casdoor](https://github.com/casdoor/casdoor), Docker, Docker-Compose, Web Server(nginx/caddy/apache)
-> 1. docker run -d -p 8080:80 -v ./sap-backend/application-dev.yml:/app/config/application-dev.yml zerek00/simple_assets_platform
->   + 配置application-dev.yml(填写完你的redis、mysql、文件保存位置等信息)
-> 2. docker run -d -p 8081:8081 zerek00/simple_assets_platform_backend
-> 3. 配置Web服务器的proxy_pass选项
->   + /api/ -> 8181端口
->   + / -> 8080端口
-> 4访问 http://localhost/
-> 5Enjoy it!
+### 安装过程 / Install Steps：
+***Pre-Install: [Casdoor](https://github.com/casdoor/casdoor), Docker, Docker-Compose, Web Server(nginx/caddy/apache)***
+```
+1. docker run -d -p 8080:80 -v ./sap-backend/application-dev.yml:/app/config/application-dev.yml zerek00/simple_assets_platform
+  + 配置application-dev.yml(填写完你的redis、mysql、文件保存位置等信息)
+2. docker run -d -p 8081:8081 zerek00/simple_assets_platform_backend
+3. 配置Web服务器的proxy_pass选项
+  + /api/ -> 8181端口
+  + / -> 8080端口
+4. 访问 http://localhost/
+5. Enjoy it!
+```
 ### application-dev.yml Example:  
 ```yaml
 casdoor
@@ -103,5 +106,9 @@ proxy_redirect      off;
      }
 }
 ```
-## Author Status  
-[![My Github Stats](https://github-readme-stats.vercel.app/api?username=Zerek-Cheng&show_icons=true&theme=radical)](https://github.com/Zerek-Cheng)]
+## 项目 Star 趋势 / Project Star Trend  
+![](https://starchart.cc/Zerek-Cheng/Simple-Assets-Platform.svg)
+
+
+## 作者状态 / Author Status  
+[![My Github Stats](https://github-readme-stats.vercel.app/api?username=Zerek-Cheng&show_icons=true&theme=radical)](https://github.com/Zerek-Cheng)
