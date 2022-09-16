@@ -1,4 +1,4 @@
-name: Build and Push The Docker Image
+name: Docker Image
 on:
   workflow_dispatch:
     inputs:
