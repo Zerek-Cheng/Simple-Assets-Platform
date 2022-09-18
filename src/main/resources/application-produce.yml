@@ -20,7 +20,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://192.168.xxx.5:3306/spring?useUnicode=true&characterEncoding=utf-8&useSSL=false&useAffectedRows=true
+      url: jdbc:mysql://192.168.xxx.5:3306/spring?useUnicode=true&characterEncoding=utf-8&useSSL=false&useAffectedRows=true&serverTimezone=GMT%2B8
       username: xxxxxx
       password: xxxxxx
   session:

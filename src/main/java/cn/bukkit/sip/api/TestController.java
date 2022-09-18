@@ -1,9 +1,9 @@
 package cn.bukkit.sip.api;
 
 import cn.bukkit.sip.exception.RestException;
+import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.service.ImgService;
 import cn.bukkit.sip.orm.UserDaoService;
-import cn.bukkit.sip.orm.entity.Img;
 import cn.bukkit.sip.pojo.RestData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -45,11 +45,11 @@ public class TestController {
 
     @GetMapping("/test")
     public Object test() {
-        Img img = imgService.getImgDaoService().getById(1568515003021197313L);
-        System.out.println("img = " + img);
-        System.out.println("img.getUser() = " + img.getUser());
-        System.out.println("img.getUser().getData() = " + img.getUser().getData());
-        System.out.println("user = " + img.getUser());
+        ImgEntity imgEntity = imgService.getImgDaoService().getById(1568515003021197313L);
+        System.out.println("img = " + imgEntity);
+        System.out.println("img.getUser() = " + imgEntity.getUserEntity());
+        System.out.println("img.getUser().getData() = " + imgEntity.getUserEntity().getData());
+        System.out.println("user = " + imgEntity.getUserEntity());
         return null;
     }
 }

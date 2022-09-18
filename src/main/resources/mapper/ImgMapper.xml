@@ -2,17 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bukkit.sip.orm.mapper.ImgMapper">
     <cache/>
-    <resultMap id="BaseResultMap" type="cn.bukkit.sip.orm.entity.Img">
+    <resultMap id="BaseResultMap" type="cn.bukkit.sip.orm.entity.ImgEntity">
         <!--@mbg.generated-->
         <!--@Table img-->
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="size" jdbcType="INTEGER" property="size"/>
+        <result column="public" jdbcType="TINYINT" property="isPublic"/>
+        <result column="limit_date" property="dateLimit"/>
+        <result column="limit_times" jdbcType="INTEGER" property="timesLimit"/>
         <result column="owner" jdbcType="VARCHAR" property="owner"/>
-        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
-        <association column="owner" property="user"
-                     javaType="cn.bukkit.sip.orm.entity.User"
+        <result column="deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <association column="owner" property="userEntity"
+                     javaType="cn.bukkit.sip.orm.entity.UserEntity"
                      select="cn.bukkit.sip.orm.mapper.UserMapper.selectById"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -21,6 +24,9 @@
         `name`,
         `path`,
         `size`,
+        `public`,
+        `limit_date`,
+        `limit_times`,
         `owner`,
         `deleted`
     </sql>

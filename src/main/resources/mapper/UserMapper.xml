@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bukkit.sip.orm.mapper.UserMapper">
     <cache/>
-    <resultMap id="BaseResultMap" type="cn.bukkit.sip.orm.entity.User">
+    <resultMap id="BaseResultMap" type="cn.bukkit.sip.orm.entity.UserEntity">
         <!--@mbg.generated-->
         <!--@Table `user`-->
         <id column="id" jdbcType="VARCHAR" property="id"/>
