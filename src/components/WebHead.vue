@@ -2,10 +2,14 @@
   <el-row id="head-container">
     <el-col :md="{span:14,push:5}" :xs="24">
       <el-col :xs="24" class="hidden-md-and-up" id="h-left">
-        <el-link type="primary" id="h-site-url" href="/">Demo</el-link>
+        <el-link id="h-site-url" @click="$router.push({name: 'home'})">
+          {{ SITE_NAME }}
+        </el-link>
       </el-col>
-      <el-col :md="7" :xs="24" id="h-left">
-        <el-link type="primary" id="h-site-url" href="/" class="hidden-sm-and-down">Demo</el-link>
+      <el-col :md="7" id="h-left">
+        <el-link id="h-site-url" @click="$router.push({name: 'home'})" class="hidden-sm-and-down">
+          {{ SITE_NAME }}
+        </el-link>
         <el-menu
             :default-active="$route.path"
             id="h-menu"
@@ -70,7 +74,8 @@ import {mapGetters} from 'vuex';
 export default {
   name: 'WebHead',
   data: () => ({
-    input: ''
+    input: '',
+    SITE_NAME: process.env.VUE_APP_SITE_NAME,
   }),
   computed: {
     ...mapGetters(['user'])
@@ -134,8 +139,7 @@ export default {
 }
 
 #h-site-url {
-  font-size: 2em;
-  letter-spacing: 1rem;
+  font-size: 2rem;
   background: linear-gradient(to left top, blue 0%, #20a9a4 45%, #14ded7 100%);
   -webkit-background-clip: text;
   color: transparent;

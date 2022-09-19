@@ -60,7 +60,8 @@
       "semi": "off",
       "comma-dangle": "off",
       "indent": "off",
-      "object-curly-spacing": "off"
+      "object-curly-spacing": "off",
+      "vue/no-v-text-v-html-on-component": "off"
     }
   },
   "browserslist": [

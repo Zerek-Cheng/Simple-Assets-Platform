@@ -53,9 +53,7 @@ export default {
   },
   methods: {
     loadImngList() {
-      this.$api.getImgList(this.page, this.size).then((res) => {
-        this.imgUrl.push(...res.data.data)
-      })
+      this.$api.getImgList(this.page, this.size).then((res) => this.imgUrl.push(...res.data.data))
     },
     getMore() {
       const bottom = document.documentElement.offsetHeight - window.innerHeight - document.documentElement.scrollTop

@@ -1,4 +1,4 @@
-name: Build And Deploy To Github Pages
+name: Pages Build
 on:
   workflow_dispatch:
   push:

@@ -2,20 +2,20 @@
   <el-row>
     <el-col :span="24" class="hidden-sm-and-down">
       <el-carousel :interval="5000" arrow="always" height="40vh" type="card" id="img-md" ref="imgmd">
-        <el-carousel-item v-for="item in 4" :key="item">
+        <el-carousel-item v-for="item in img" :key="item">
           <el-image draggable="false"
                     style="width: 100%; height: 100%;"
-                    :src="`/assets/img/home-${item}.jpg`"
+                    :src="item"
                     fit="cover"/>
         </el-carousel-item>
       </el-carousel>
     </el-col>
     <el-col :span="24" class="hidden-md-and-up">
       <el-carousel :interval="5000" arrow="always" height="30vh" id="img-xs" ref="imgxs">
-        <el-carousel-item v-for="item in 4" :key="item">
+        <el-carousel-item v-for="item in img" :key="item">
           <el-image draggable="false"
                     style="width: 100%; height: 100%;"
-                    :src="`/assets/img/home-${item}.jpg`"
+                    :src="item"
                     fit="cover"/>
         </el-carousel-item>
       </el-carousel>
@@ -49,6 +49,11 @@
 <script>
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      img: process.env.VUE_APP_HOME_IMGS.split(',')
+    };
+  },
   methods: {
     setCursor(box) {
       let startPoint = 0;

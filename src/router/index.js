@@ -27,9 +27,15 @@ const routes = [
     }
 ]
 
+function getAbsolutePath() {
+    const path = location.pathname
+    return path.substring(0, path.lastIndexOf('/') + 1)
+}
+
+
 const router = new VueRouter({
     mode: 'history',
-    base: process.env.BASE_URL,
+    base: getAbsolutePath(),
     routes,
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
