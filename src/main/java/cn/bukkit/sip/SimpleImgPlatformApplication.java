@@ -8,11 +8,16 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -22,9 +27,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.Duration;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @SpringBootApplication
@@ -33,7 +40,8 @@ import java.time.Duration;
 @EnableCaching(proxyTargetClass = true)
 @EnableAsync(proxyTargetClass = true)
 @EnableRedisHttpSession
-public class SimpleImgPlatformApplication implements WebMvcConfigurer {
+@Slf4j
+public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
 
     public static void main(String[] args) {
         SpringApplication.run(SimpleImgPlatformApplication.class, args);
@@ -79,5 +87,14 @@ public class SimpleImgPlatformApplication implements WebMvcConfigurer {
         return interceptor;
     }
 
-
+    @Override
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+        System.out.println("SimpleImgPlatformApplication Environment PostProcessor");
+        MutablePropertySources propertySources = environment.getPropertySources();
+        System.getenv().forEach((k, v) -> {
+            propertySources.addFirst(new MapPropertySource(k, Map.of(k, v)));
+            if (Optional.ofNullable(environment.getProperty("spring.profiles.active")).orElse("").startsWith("dev"))
+                System.out.printf("SimpleImgPlatformApplication.postProcessEnvironment: %s=%s\r\n", k, v);
+        });
+    }
 }
