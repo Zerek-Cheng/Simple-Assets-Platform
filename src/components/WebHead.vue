@@ -109,7 +109,7 @@ export default {
   background-color: transparent !important;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 990px) {
   .el-menu-item {
     width: 100vw;
   }
@@ -143,6 +143,7 @@ export default {
   background: linear-gradient(to left top, blue 0%, #20a9a4 45%, #14ded7 100%);
   -webkit-background-clip: text;
   color: transparent;
+  padding-right: 1vh;
 }
 
 .el-menu {

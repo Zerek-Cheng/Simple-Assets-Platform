@@ -20,6 +20,7 @@ Vue.use(VueClipboard)
 Vue.prototype._ = _
 Vue.prototype.$axios = axios;
 Vue.prototype.$api = backend(axios);
+Vue.prototype.$cookies = Cookies;
 
 function onReqError(error) {
     /^[4|5]/i[Symbol.search](error.response.status.toString()) !== -1
@@ -28,13 +29,13 @@ function onReqError(error) {
 }
 
 Vue.prototype.$axios.interceptors.request.use((config) => {
-    if (config.method === 'post') config.data = qs.stringify(config.data);
-    if (!Cookies.get('XSRF-TOKEN') && !store.state.csrf) Vue.prototype.$api.getCsrf().then(() => store.commit('csrf', Cookies.get('XSRF-TOKEN')))
-    if (Cookies.get('XSRF-TOKEN') || store.state.csrf) config.headers['X-XSRF-TOKEN'] = Cookies.get('XSRF-TOKEN') || store.getters.csrf;
+    if (config.method === 'post' && config.headers['Content-Type'] === 'application/x-www-form-urlencoded') config.data = qs.stringify(config.data);
+    if (!Vue.prototype.$cookies.get('XSRF-TOKEN') && !store.state.csrf) Vue.prototype.$api.getCsrf().then(() => store.commit('csrf', Vue.prototype.$cookies.get('XSRF-TOKEN')))
+    if (Vue.prototype.$cookies.get('XSRF-TOKEN') || store.state.csrf) config.headers['X-XSRF-TOKEN'] = Vue.prototype.$cookies.get('XSRF-TOKEN') || store.getters.csrf;
     return config;
 }, onReqError)
 Vue.prototype.$axios.interceptors.response.use((config) => {
-    if (Cookies.get('XSRF-TOKEN')) store.commit('csrf', Cookies.get('XSRF-TOKEN'));
+    if (Vue.prototype.$cookies.get('XSRF-TOKEN')) store.commit('csrf', Vue.prototype.$cookies.get('XSRF-TOKEN'));
     return config;
 }, onReqError)
 
