@@ -18,13 +18,13 @@
             background-color="transparent"
             text-color="#fff"
             active-text-color="#ffd04b">
-          <el-menu-item index="/" @click="$router.push('/')">
+          <el-menu-item index="/" @click="$router.push({name: 'home'})">
             <span>首页</span>
           </el-menu-item>
-          <el-menu-item index="/pics" @click="$router.push('/pics')">
+          <el-menu-item index="/pics" @click="$router.push({name: 'pics'})">
             <span>展示</span>
           </el-menu-item>
-          <el-menu-item index="/upload" @click="$router.push('/upload')">
+          <el-menu-item index="/upload" @click="$router.push({name: 'upload'})">
             <span>上传</span>
           </el-menu-item>
         </el-menu>
@@ -59,7 +59,7 @@
             <template slot="title">
               <el-avatar :src="this.user.avatar" shape="square" size="large"/>
             </template>
-            <el-menu-item index="/price" @click="$router.push('/price')">套餐&费用</el-menu-item>
+            <el-menu-item index="/price" @click="$router.push({name: 'price'})">套餐&费用</el-menu-item>
             <el-menu-item index="/safe" @click="profile">安全中心</el-menu-item>
             <el-menu-item index="/logout" @click="logout">退出</el-menu-item>
           </el-submenu>

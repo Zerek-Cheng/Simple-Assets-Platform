@@ -24,18 +24,13 @@ const routes = [
         name: 'pic-info',
         component: () => import(/* webpackChunkName: "about" */ '../views/PicInfoView.vue'),
         props: true
-    }
+    },
 ]
-
-function getAbsolutePath() {
-    const path = location.pathname
-    return path.substring(0, path.lastIndexOf('/') + 1)
-}
 
 
 const router = new VueRouter({
     mode: 'history',
-    base: getAbsolutePath(),
+    base: process.env.VUE_APP_ROUTER_BASE ? process.env.VUE_APP_ROUTER_BASE : '/',
     routes,
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {

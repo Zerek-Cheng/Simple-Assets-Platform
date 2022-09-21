@@ -7,12 +7,12 @@
 </template>
 <script>
 export default {
+  name: 'PicInfoView',
   props: ['pic'],
   components: {
     // eslint-disable-next-line import/no-unresolved
     PicInfo: () => import('@/components/PicInfo.vue')
   },
-  name: 'PicInfoView',
   methods: {
     back() {
       window.history.go(-1)
