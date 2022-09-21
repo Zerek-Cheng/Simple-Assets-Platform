@@ -1,29 +1,23 @@
 <template>
-  <el-row id="imgs">
+  <el-row>
     <el-drawer
         title="按ESC建或右边的×关闭"
         size="auto"
         :visible.sync="show"
         direction="ttb" id="drawer">
       <span>
-        <PicInfo :pic="showId" @back="show=false;showId=undefined"/>
+        <PicInfo :pic="showId" @back="show=false;showId=null"/>
       </span>
     </el-drawer>
-    <el-col :md="{span:22,push:1}" :xs="24" v-if="this.imgUrl&&this.imgUrl.length">
-      <el-image
-          v-for="item in this.$data.imgUrl" :key="item.id"
-          :src="`/api/img/get/${item.id}`"
-          @click="show=true;showId=item.id"
-          fit="contain" class="single-img" lazy>
-        <div slot="placeholder" class="image-slot">
-          <el-skeleton animated :rows="3" :throttle="100">
-            <el-skeleton-item variant="image"></el-skeleton-item>
-          </el-skeleton>
-        </div>
-      </el-image>
+    <el-col :md="{span:18,push:3}" :xs="24" v-if="this.imgUrl&&this.imgUrl.length" id="img-content">
+      <img style="object-fit: contain"
+           v-for="item in this.$data.imgUrl" :key="item.id"
+           :src="`/api/img/get/${item.id}`"
+           @click="show=true;showId=item.id"
+           class="single-img" :alt="'Image ID-'+item.id"/>
     </el-col>
 
-    <el-col :md="{span:22,push:1}" :xs="24" v-if="!this.imgUrl">
+    <el-col :md="{span:20,push:2}" :xs="24" v-if="!this.imgUrl">
       <el-col :md="5" :xs="24" v-for="item in 12" :key="item">
         <el-image src="/api/img/get/0">
           <div slot="placeholder" class="image-slot" style="width: 80%">
@@ -88,10 +82,16 @@ export default {
 }
 </style>
 <style scoped lang="scss">
+#img-content {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 1em;
+}
+
 .single-img {
-  width: 20%;
+  width: 23%;
   height: 25vh;
-  margin: 0.25%;
   border: 1px solid gray;
   background-color: rgba(143, 141, 141, 0.15);
   @media screen and (max-width: 990px) {
