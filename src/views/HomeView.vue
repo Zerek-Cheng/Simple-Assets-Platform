@@ -1,17 +1,9 @@
 <template>
   <el-row>
-    <el-col :span="24" class="hidden-sm-and-down">
-      <el-carousel :interval="5000" arrow="always" height="40vh" type="card" id="img-md" ref="imgmd">
-        <el-carousel-item v-for="item in img" :key="item">
-          <el-image draggable="false"
-                    style="width: 100%; height: 100%;"
-                    :src="item"
-                    fit="cover"/>
-        </el-carousel-item>
-      </el-carousel>
-    </el-col>
-    <el-col :span="24" class="hidden-md-and-up">
-      <el-carousel :interval="5000" arrow="always" height="30vh" id="img-xs" ref="imgxs">
+    <el-col :span="24">
+      <el-carousel :interval="10*1000" arrow="always" ref="topImg"
+                   id="home-top-img"
+                   :height="this.imgHeight">
         <el-carousel-item v-for="item in img" :key="item">
           <el-image draggable="false"
                     style="width: 100%; height: 100%;"
@@ -51,7 +43,8 @@ export default {
   name: 'HomeView',
   data() {
     return {
-      img: process.env.VUE_APP_HOME_IMGS.split(',')
+      img: process.env.VUE_APP_HOME_IMGS.split(','),
+      imgHeight: '40vh'
     };
   },
   methods: {
@@ -80,26 +73,25 @@ export default {
         }
         if (startPoint - stopPoint > 0) {
           resetPoint();
-          this.$refs.imgmd.next();
-          this.$refs.imgxs.next();
+          this.$refs.topImg.next();
           return;
         }
         if (startPoint - stopPoint < 0) {
           resetPoint();
-          this.$refs.imgmd.prev();
-          this.$refs.imgxs.prev();
+          this.$refs.topImg.prev();
         }
       })
     }
   },
+  created() {
+    this.imgHeight = window.outerWidth >= 990 ? '45vh' : '30vh';
+  },
   mounted() {
-    this.setCursor(document.getElementById('img-md'));
-    this.setCursor(document.getElementById('img-xs'));
+    this.setCursor(document.getElementById('home-top-img'));
   }
 }
 </script>
 <style scoped lang="scss">
-
 .el-carousel__item {
   display: inline-flex;
   justify-content: center;

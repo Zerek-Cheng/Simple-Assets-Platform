@@ -25,7 +25,7 @@
 
     <el-col :md="{span:22,push:1}" :xs="24" v-if="!this.imgUrl">
       <el-col :md="5" :xs="24" v-for="item in 12" :key="item">
-        <el-image src="/api/img/get/unknown">
+        <el-image src="/api/img/get/0">
           <div slot="placeholder" class="image-slot" style="width: 80%">
             <el-skeleton animated :rows="3" :throttle="100">
               <el-skeleton-item variant="image"></el-skeleton-item>
@@ -45,7 +45,7 @@ export default {
       size: 20,
       page: 1,
       show: false,
-      showId: undefined,
+      showId: null,
     }
   },
   components: {

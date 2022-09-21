@@ -5,7 +5,6 @@ import VueClipboard from 'vue-clipboard2';
 import App from './App.vue'
 import Cookies from 'js-cookie';
 import axios from './axiosInit';
-import qs from 'qs';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'element-ui/lib/theme-chalk/display.css';
@@ -29,7 +28,7 @@ function onReqError(error) {
 }
 
 Vue.prototype.$axios.interceptors.request.use((config) => {
-    if (config.method === 'post' && config.headers['Content-Type'] === 'application/x-www-form-urlencoded') config.data = qs.stringify(config.data);
+    if (config.method === 'post' && config.headers['Content-Type'].indexOf('x-www-form-urlencoded') !== -1) config.data = new URLSearchParams(config.data);
     if (!Vue.prototype.$cookies.get('XSRF-TOKEN') && !store.state.csrf) Vue.prototype.$api.getCsrf().then(() => store.commit('csrf', Vue.prototype.$cookies.get('XSRF-TOKEN')))
     if (Vue.prototype.$cookies.get('XSRF-TOKEN') || store.state.csrf) config.headers['X-XSRF-TOKEN'] = Vue.prototype.$cookies.get('XSRF-TOKEN') || store.getters.csrf;
     return config;

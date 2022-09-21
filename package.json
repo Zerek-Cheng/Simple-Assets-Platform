@@ -10,11 +10,10 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "core-js": "^3.25.1",
+    "core-js": "^3.25.2",
     "element-ui": "^2.15.10",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
-    "qs": "^6.11.0",
     "vue": "^2.7.10",
     "vue-clipboard2": "^0.3.3",
     "vue-router": "^3.5.1",
@@ -35,13 +34,13 @@
     "eslint": "^8.23.1",
     "eslint-config-ali": "^14.0.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-vue": "^9.4.0",
+    "eslint-plugin-vue": "^9.5.1",
     "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
     "style-resources-loader": "^1.5.0",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.7.10",
-    "webpack-dev-server": "^4.11.0"
+    "webpack-dev-server": "^4.11.1"
   },
   "eslintConfig": {
     "root": true,
@@ -61,7 +60,8 @@
       "comma-dangle": "off",
       "indent": "off",
       "object-curly-spacing": "off",
-      "vue/no-v-text-v-html-on-component": "off"
+      "vue/no-v-text-v-html-on-component": "off",
+      "no-param-reassign": "off"
     }
   },
   "browserslist": [

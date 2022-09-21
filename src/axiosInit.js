@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 export default axios.create({
     baseURL: window.origin,
-    withCredentials: true
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    }
 });
