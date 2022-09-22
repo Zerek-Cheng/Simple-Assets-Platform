@@ -72,6 +72,27 @@ export default {
     dateLimit: null,
     timesLimit: null,
   }),
+  watch: {
+    isPublic(v) {
+      this.$cookies.set('isPublic', v);
+    },
+    dateLimit(v) {
+      if (v && v > Date.now()) {
+        this.$cookies.set('dateLimit', v);
+        return;
+      }
+      this.dateLimit = null;
+      this.$cookies.remove('dateLimit');
+    },
+    timesLimit(v) {
+      if (v && v > 0) {
+        this.$cookies.set('timesLimit', v);
+        return;
+      }
+      this.timesLimit = null;
+      this.$cookies.remove('timesLimit');
+    },
+  },
   computed: {
     ...mapState(['user', 'csrf'])
   },
@@ -85,22 +106,11 @@ export default {
       const data = {};
       data.isPublic = this.isPublic;
       data.file = config.file;
-      if (this.dateLimit) data.dataLimit = this.dateLimit;
+      if (this.dateLimit) data.dataLimit = this.dateLimit.getTime();
       if (this.timesLimit) data.timesLimit = this.timesLimit;
       return data;
     },
     confirmUpload() { // 确认上传
-      this.$cookies.set('isPublic', this.$refs.isPublic.value);
-      if (this.$refs.datetime.value) {
-        this.$cookies.set('dateLimit', this.$refs.datetime.value)
-      } else {
-        this.$cookies.remove('dateLimit');
-      }
-      if (this.$refs.timesLimit.value && this.$refs.timesLimit.value > 100) {
-        this.$cookies.set('timesLimit', this.$refs.timesLimit.value)
-      } else {
-        this.$cookies.remove('timesLimit');
-      }
       this.$refs.upload.submit()
     },
     requestUpload(config) {

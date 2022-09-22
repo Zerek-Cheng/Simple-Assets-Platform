@@ -56,6 +56,13 @@ export default (http) => {
                 method: 'get',
                 url: `/api/img/info/${id}`
             })
+        },
+        editImgInfo(id, data) {
+            return http.request({
+                method: 'post',
+                url: `/api/img/edit/${id}`,
+                data,
+            })
         }
     };
 }
