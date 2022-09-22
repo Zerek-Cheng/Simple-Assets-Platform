@@ -22,8 +22,9 @@ Vue.prototype.$api = backend(axios);
 Vue.prototype.$cookies = Cookies;
 
 function onReqError(error) {
+    console.log(error);
     /^[4|5]/i[Symbol.search](error.response.status.toString()) !== -1
-        ? Vue.prototype.$message.error('后端异常，请联系管理员')
+        ? Vue.prototype.$message.error(`[${error.response.status}]后端处理错误-${error.response.data.message}`)
         : Vue.prototype.$message.error(error.message);
 }
 

@@ -14,7 +14,7 @@
            v-for="item in this.$data.imgUrl" :key="item.id"
            :src="`/api/img/get/${item.id}`"
            @click="show=true;showId=item.id"
-           class="single-img" :alt="'Image ID-'+item.id"/>
+           class="single-img" :alt="'Image ID-'+item.id" loading="lazy"/>
     </el-col>
 
     <el-col :md="{span:20,push:2}" :xs="24" v-if="!this.imgUrl">
@@ -46,25 +46,24 @@ export default {
     PicInfo: () => import('./PicInfo.vue')
   },
   methods: {
-    loadImngList() {
+    loadImgList() {
       this.$api.getImgList(this.page, this.size).then((res) => {
-        this.imgUrl = [...res.data.data]
+        this.imgUrl = [...res.data.data.img]
       })
     },
     getMore() {
       const bottom = document.documentElement.offsetHeight - window.innerHeight - document.documentElement.scrollTop
       if (!this.imgUrl || (0.03 * window.innerHeight < bottom && bottom !== 0)) return;
-      this.page++
-      this.$api.getImgList(this.page, this.size).then((res) => {
-        if (res.data.data.length < this.size) window.removeEventListener('scroll', this.tGetMore, true)
-        this.imgUrl.push(...res.data.data)
+      this.$api.getImgList(++this.page, this.size).then((res) => {
+        if (!res.data.data.hasNext) window.removeEventListener('scroll', this.tGetMore, true)
+        this.imgUrl.push(...res.data.data.img)
       })
       console.debug(`加载第${this.page}页`)
     },
   },
   beforeMount() {
     this.tGetMore = this._.debounce(this.getMore, 100)
-    this.loadImngList()
+    this.loadImgList()
     window.addEventListener('scroll', this.tGetMore, true)
   },
   destroyed() {
@@ -85,12 +84,12 @@ export default {
 #img-content {
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 1em;
+  justify-content: space-between;
+  gap: 0.2em;
 }
 
 .single-img {
-  width: 23%;
+  width: auto;
   height: 25vh;
   border: 1px solid gray;
   background-color: rgba(143, 141, 141, 0.15);

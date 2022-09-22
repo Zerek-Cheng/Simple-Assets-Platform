@@ -28,8 +28,5 @@ export default new Vuex.Store({
         csrf(state, token) {
             state.csrf = token;
         },
-        login(state, login) {
-            state.login = login
-        },
     },
 })
