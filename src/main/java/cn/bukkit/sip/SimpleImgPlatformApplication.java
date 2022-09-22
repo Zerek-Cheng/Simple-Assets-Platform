@@ -9,9 +9,13 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +34,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -96,5 +99,17 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
             if (Optional.ofNullable(environment.getProperty("spring.profiles.active")).orElse("").startsWith("dev"))
                 System.out.printf("SimpleImgPlatformApplication.postProcessEnvironment: %s=%s\r\n", k, v);
         });
+    }
+
+    @Bean
+    public ServletWebServerFactory tomcatEmbedded() {
+        TomcatServletWebServerFactory tomcat = new org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory();
+        tomcat.addConnectorCustomizers(connector -> {
+            if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol<?>)) {
+                ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(-1);
+            }
+        });
+        return tomcat;
+
     }
 }

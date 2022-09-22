@@ -23,7 +23,6 @@ public class SecutiryConfiguration {
                 authorizeRequests
                         .antMatchers("/test/**",
                                 "/login/**",
-                                "/img/**",
                                 "/img/**").permitAll()
                         .anyRequest().authenticated()
         ).csrf((csrf) -> csrf.ignoringAntMatchers("/test/**", "/login/callback").csrfTokenRepository(cookieCsrfTokenRepository));

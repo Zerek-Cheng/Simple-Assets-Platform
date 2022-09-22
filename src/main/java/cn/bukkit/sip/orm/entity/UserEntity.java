@@ -1,15 +1,14 @@
 package cn.bukkit.sip.orm.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.casbin.casdoor.entity.CasdoorUser;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Builder

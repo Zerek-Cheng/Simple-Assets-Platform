@@ -39,12 +39,12 @@ public class ImgEntity implements Serializable {
     @TableField(value = "public")
     private Boolean isPublic = true;
 
-    @TableField(value = "limit_date")
+    @TableField(value = "limit_date", updateStrategy = FieldStrategy.IGNORED)
     @JsonSerialize(using = LocalDateTimeToTimestampSerializer.class)
     @JsonDeserialize(using = LocalDateTimeToTimestampDeserializer.class)
     private LocalDateTime dateLimit;
 
-    @TableField(value = "limit_times")
+    @TableField(value = "limit_times", updateStrategy = FieldStrategy.IGNORED)
     private Integer timesLimit;
 
     @TableField(value = "owner")
