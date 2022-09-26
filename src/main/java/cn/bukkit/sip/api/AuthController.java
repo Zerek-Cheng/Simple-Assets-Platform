@@ -36,12 +36,12 @@ public class AuthController {
                             String callback,
                             @RequestParam(required = false) boolean go) {
         this.session.setAttribute("callback", callback);
-        String signinUrl = casdoorAuthService.getSigninUrl(redirect == null || redirect.isBlank() ? this.callback : redirect);
+        String url = casdoorAuthService.getSigninUrl(redirect == null || redirect.isBlank() ? this.callback : redirect);
         if (go) {
-            response.sendRedirect(signinUrl);
+            response.sendRedirect(url);
             return null;
         }
-        return RestData.builder().data(signinUrl).build();
+        return RestData.builder().data(url).build();
     }
 
     @ResponseBody
@@ -62,8 +62,8 @@ public class AuthController {
     @ResponseBody
     @SneakyThrows
     @RequestMapping("/goProfile")
-    public RestData goProfile(@RequestParam(required = false) boolean go) {
-        String myProfileUrl = this.casdoorAuthService.getMyProfileUrl(null);
+    public RestData goProfile(@RequestParam(required = false) boolean go, @RequestParam(required = false) String returnUrl) {
+        String myProfileUrl = this.casdoorAuthService.getMyProfileUrl(null, returnUrl);
         if (go) {
             response.sendRedirect(myProfileUrl);
             return null;

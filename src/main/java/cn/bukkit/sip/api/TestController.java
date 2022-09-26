@@ -1,16 +1,15 @@
 package cn.bukkit.sip.api;
 
 import cn.bukkit.sip.exception.RestException;
-import cn.bukkit.sip.orm.UserDaoService;
 import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.pojo.RestData;
-import cn.bukkit.sip.service.ImgService;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.bukkit.sip.utils.service.ImgService;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.HashMap;
 
@@ -38,10 +37,8 @@ public class TestController {
         return builder.build();
     }
 
-    @Autowired
+    @Resource
     ImgService imgService;
-    @Autowired
-    UserDaoService userDaoService;
 
     @GetMapping("/test")
     public Object test() {

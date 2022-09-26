@@ -1,5 +1,7 @@
-package cn.bukkit.sip.security;
+package cn.bukkit.sip.security.provider;
 
+import cn.bukkit.sip.security.token.CasdoorAuthenticationToken;
+import cn.bukkit.sip.security.token.CasdoorSapPrincipal;
 import org.casbin.casdoor.entity.CasdoorUser;
 import org.casbin.casdoor.service.CasdoorAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,7 @@ public class CasdoorProvider implements AuthenticationProvider {
                 token.getAuthorities().add(new SimpleGrantedAuthority(subRole));
             }
         });
-        token.setPrincipal(casdoorUser);
-        token.setName(casdoorUser.getDisplayName());
+        token.setPrincipal(new CasdoorSapPrincipal(casdoorUser));
         token.setCredentials(UUID.randomUUID().toString());
         token.setAuthenticated(true);
         return token;

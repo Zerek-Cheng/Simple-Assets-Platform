@@ -21,7 +21,8 @@ public class SecutiryConfiguration {
 
         http.authorizeRequests(authorizeRequests ->
                 authorizeRequests
-                        .antMatchers("/test/**",
+                        .antMatchers(
+                                "/test/**",
                                 "/login/**",
                                 "/img/**").permitAll()
                         .anyRequest().authenticated()

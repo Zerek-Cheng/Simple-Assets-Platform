@@ -8,11 +8,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 @Service
 public class ImgDaoService extends ServiceImpl<ImgMapper, ImgEntity> {
     @Override
-    @Cacheable(value = "img", key = "#id", unless = "#result == null")
+    @Cacheable(value = "img", key = "#id", unless = "#result==null")
     public ImgEntity getById(Serializable id) {
         return super.getById(id);
     }
@@ -21,5 +22,15 @@ public class ImgDaoService extends ServiceImpl<ImgMapper, ImgEntity> {
     @CacheEvict(value = "img", key = "#imgEntity.id")
     public boolean updateById(ImgEntity imgEntity) {
         return super.updateById(imgEntity);
+    }
+
+    @Override
+    public boolean updateBatchById(Collection<ImgEntity> entityList) {
+        entityList.forEach(this::updateById);
+        return super.updateBatchById(entityList);
+    }
+
+    @CacheEvict(value = "img", key = "#id")
+    public void cleanCache(Serializable id) {
     }
 }

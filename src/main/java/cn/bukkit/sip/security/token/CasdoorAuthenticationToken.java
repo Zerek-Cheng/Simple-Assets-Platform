@@ -1,11 +1,9 @@
-package cn.bukkit.sip.security;
+package cn.bukkit.sip.security.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.casbin.casdoor.entity.CasdoorUser;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
@@ -15,14 +13,17 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CasdoorAuthenticationToken implements Authentication {
+public class CasdoorAuthenticationToken implements SapToken {
     String code;
     String state;
     Object Credentials;
     Object Details;
-    CasdoorUser Principal;
+    CasdoorSapPrincipal Principal;
     boolean Authenticated;
-    String name;
     Collection<GrantedAuthority> Authorities = new ArrayList<>();
 
+    @Override
+    public String getName() {
+        return this.getPrincipal().getName();
+    }
 }
