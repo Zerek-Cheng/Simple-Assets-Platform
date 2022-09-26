@@ -1,12 +1,12 @@
 <template>
   <el-row>
-    <el-col :md="{span:16,push: 4}" :xs="{span:22,push:1}" id="upload-col">
-      <el-card id="box-card">
-        <el-col slot="header" id="upload-card-header">
-          <el-col style="display: inline-block;width: auto;margin-right: 2em;">
+    <el-col :md="{span:16,push: 4}" :xs="{span:22,push:1}">
+      <el-card>
+        <template v-slot:header>
+          <el-col style="display: inline-block;width: auto;margin-right: 1.5em;" id="title-col">
             <h1>图片上传</h1>
           </el-col>
-          <el-col id="upload-setting" :xs="24" :md="18" v-if="this.user">
+          <el-col id="upload-setting" :xs="24" :md="18" v-if="user">
             <el-checkbox v-model="isPublic"
                          :value="true"
                          ref="isPublic">
@@ -24,7 +24,7 @@
               <template slot="append">次</template>
             </el-input>
           </el-col>
-        </el-col>
+        </template>
         <el-alert
             v-if="!this.user"
             id="login-warn"
@@ -142,12 +142,6 @@ export default {
 }
 </script>
 <style lang="scss">
-#upload-col .el-card__header {
-  padding: 0.5rem 1rem;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-}
 
 .upload {
   margin-top: 1vw;
@@ -165,15 +159,6 @@ export default {
   line-height: 1em;
 }
 
-#box-card { // 整个上传卡片
-  margin-top: 5%;
-  padding-top: 1vh;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-
-  .el-card__body {
-    padding-top: 0.5em;
-  }
-}
 </style>
 <style scoped lang="scss">
 #upload-setting {
@@ -195,13 +180,6 @@ export default {
       width: 100%;
     }
   }
-}
-
-#upload-card-header {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  text-wrap: none;
 }
 
 #confirm { // 上传按钮

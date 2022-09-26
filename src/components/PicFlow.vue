@@ -31,6 +31,7 @@
   </el-row>
 </template>
 <script>
+
 export default {
   name: 'PicFlow',
   data() {
@@ -47,8 +48,10 @@ export default {
   },
   methods: {
     loadImgList() {
+      const loading = this.$loading();
       this.$api.getImgList(this.page, this.size).then((res) => {
         this.imgUrl = [...res.data.data.img]
+        loading.close();
       })
     },
     getMore() {

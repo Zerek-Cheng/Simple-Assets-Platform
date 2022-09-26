@@ -12,22 +12,22 @@ const routes = [
     {
         path: '/pics',
         name: 'pics',
-        component: () => import(/* webpackChunkName: "pics" */ '@/views/PicView.vue'),
+        component: () => import(/* webpackChunkName: "pics" */ '@/views/PublicPicView.vue'),
     },
     {
         path: '/upload',
         name: 'upload',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/UploadView.vue')
+        component: () => import(/* webpackChunkName: "upload" */ '@/views/UploadView.vue')
     },
     {
         path: '/gallery',
         name: 'gallery',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/GalleryView.vue')
+        component: () => import(/* webpackChunkName: "gallery" */ '@/views/GalleryView.vue')
     },
     {
         path: '/pic-info/:pic',
         name: 'pic-info',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/PicInfoView.vue'),
+        component: () => import(/* webpackChunkName: "pic-info" */ '@/views/PicInfoView.vue'),
         props: true
     },
 ]

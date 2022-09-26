@@ -44,13 +44,14 @@ export default (http) => {
         getImgUrl(id) {
             return `/api/img/get/${id}`
         },
-        getImgList(page = 1, length = 12) {
+        getImgList(page = 1, length = 12, self = false) {
             return http.request({
                 method: 'post',
                 url: '/api/img/list',
                 data: {
                     current: page,
-                    size: length
+                    size: length,
+                    self
                 }
             })
         },
@@ -65,6 +66,12 @@ export default (http) => {
                 method: 'post',
                 url: `/api/img/edit/${id}`,
                 data,
+            })
+        },
+        getUserImgTotal() {
+            return http.request({
+                method: 'post',
+                url: '/api/img/total'
             })
         }
     };
