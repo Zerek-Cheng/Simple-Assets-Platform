@@ -79,11 +79,9 @@ public class ImgService {
      */
     public byte[] loadImg(Long id) {
         ImgEntity imgEntity = this.imgDaoService.getById(id);
-        if (imgEntity == null) {
-            return null;
-        }
+        if (imgEntity == null) throw new ImgNotExistException();
         File imgFile = new File(this.path + imgEntity.getPath());
-        return imgFile.exists() ? FileUtil.readBytes(imgFile) : null;
+        return Optional.ofNullable(FileUtil.readBytes(imgFile)).orElseThrow(ImgNotExistException::new);
     }
 
     /**
@@ -149,7 +147,7 @@ public class ImgService {
      * @return 公共列表
      */
     public Page<ImgEntity> getPage(int page, int size) {
-        return this.getPage(page, size, null, Optional.empty(), true);
+        return this.getPage(page, size, null, Optional.of(true), true);
     }
 
     /**
