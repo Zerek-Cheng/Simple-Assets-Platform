@@ -66,7 +66,7 @@ export default {
     this.loadImgList()
     window.addEventListener('scroll', this.tGetMore, true)
   },
-  destroyed() {
+  beforeDestroy() {
     window.removeEventListener('scroll', this.tGetMore, true)
   }
 }

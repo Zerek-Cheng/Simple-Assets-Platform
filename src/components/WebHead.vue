@@ -55,12 +55,15 @@
             background-color="transparent"
             text-color="#fff"
             active-text-color="#ffd04b">
-          <el-submenu index="/user" popper-class="avatar-submenu" :show-timeout="10" :hide-timeout="10">
+          <el-submenu index="/user" popper-class="avatar-submenu"
+                      :show-timeout="10" :hide-timeout="10">
             <template slot="title">
               <el-avatar :src="this.user.avatar" shape="square" size="large"/>
             </template>
+            <el-menu-item index="/price"
+                          @click="$router.push({name: 'gallery'})">我的图库</el-menu-item>
             <el-menu-item index="/price" @click="$router.push({name: 'price'})">套餐&费用</el-menu-item>
-            <el-menu-item index="/safe" @click="profile">安全中心</el-menu-item>
+            <el-menu-item index="/safe" @click="profile">个人中心</el-menu-item>
             <el-menu-item index="/logout" @click="logout">退出</el-menu-item>
           </el-submenu>
         </el-menu>
@@ -97,7 +100,7 @@ export default {
       });
     },
     profile() {
-      this.$api.getProfile().then((res) => {
+      this.$api.getProfile(window.location.href).then((res) => {
         if (res.data.code === 0) window.location.href = res.data.data;
       });
     }

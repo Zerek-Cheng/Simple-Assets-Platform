@@ -7,6 +7,7 @@
     </div>
     <WebHead></WebHead>
     <el-alert
+        v-if="isDemo"
         id="home-notice"
         class="hover-light suspended"
         title="本页面为非商用页面"
@@ -19,21 +20,21 @@
   </el-row>
 </template>
 <script>
-// eslint-disable-next-line import/no-unresolved
 import WebHead from '@/components/WebHead.vue';
-// eslint-disable-next-line import/no-unresolved
 import WebBottom from '@/components/WebBottom.vue';
-import Cookies from 'js-cookie';
 
 export default {
   name: 'app',
+  data() {
+    return {
+      isDemo: process.env.VUE_APP_SITE_DEMO,
+    };
+  },
   components: {
     WebHead, WebBottom
   },
   methods: {
     async updateData() {
-      const csrfData = await this.$api.getCsrf();
-      this.$store.commit('csrf', csrfData.data.data.token ? csrfData.data.data.token : Cookies.get('XSRF-TOKEN'));
       const userData = await this.$api.getUserInfo();
       this.$store.commit('user', userData.data.code === 0 ? userData.data.data.principal : null);
     }

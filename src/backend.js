@@ -26,10 +26,13 @@ export default (http) => {
                 },
             })
         },
-        getProfile() {
+        getProfile(returnUrl = '') {
             return http.request({
                 url: '/api/login/goProfile',
                 method: 'post',
+                data: {
+                    returnUrl
+                }
             })
         },
         logout() {

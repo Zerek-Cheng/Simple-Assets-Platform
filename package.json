@@ -1,7 +1,6 @@
 {
   "name": "element",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
   "scripts": {
     "serve": "cross-env NODE_ENV=development vue-cli-service serve && webpack-dev-server",
     "build": "vue-cli-service build",
@@ -10,15 +9,14 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "core-js": "^3.25.2",
+    "core-js": "^3.25.3",
     "element-ui": "^2.15.10",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
     "vue": "^2.7.10",
     "vue-clipboard2": "^0.3.3",
-    "vue-router": "^3.5.1",
-    "vue2-waterfall": "^3.0.1",
-    "vuex": "=3.6.2"
+    "vue-router": "^3.6.5",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.1",
@@ -31,11 +29,12 @@
     "@vue/cli-service": "^5.0.8",
     "babel-plugin-component": "^1.1.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.23.1",
+    "eslint": "^8.24.0",
     "eslint-config-ali": "^14.0.2",
+    "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^9.5.1",
-    "sass": "^1.54.9",
+    "sass": "^1.55.0",
     "sass-loader": "^13.0.2",
     "style-resources-loader": "^1.5.0",
     "vue-cli-plugin-element": "^1.0.1",
@@ -62,6 +61,18 @@
       "object-curly-spacing": "off",
       "vue/no-v-text-v-html-on-component": "off",
       "no-param-reassign": "off"
+    },
+    "settings": {
+      "import/resolver": {
+        "alias": {
+          "map": [
+            [
+              "@",
+              "./src/"
+            ]
+          ]
+        }
+      }
     }
   },
   "browserslist": [
