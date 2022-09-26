@@ -2,6 +2,7 @@ package cn.bukkit.sip.security.provider;
 
 import cn.bukkit.sip.security.token.CasdoorAuthenticationToken;
 import cn.bukkit.sip.security.token.CasdoorSapPrincipal;
+import cn.bukkit.sip.security.token.SapToken;
 import org.casbin.casdoor.entity.CasdoorUser;
 import org.casbin.casdoor.service.CasdoorAuthService;
 import org.springframework.beans.factory.annotation.Autowired;

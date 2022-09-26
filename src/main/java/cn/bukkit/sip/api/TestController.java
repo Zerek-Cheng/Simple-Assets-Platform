@@ -42,11 +42,6 @@ public class TestController {
 
     @GetMapping("/test")
     public Object test() {
-        ImgEntity imgEntity = imgService.getImgDaoService().getById(1568515003021197313L);
-        System.out.println("img = " + imgEntity);
-        System.out.println("img.getUser() = " + imgEntity.getUserEntity());
-        System.out.println("img.getUser().getData() = " + imgEntity.getUserEntity().getData());
-        System.out.println("user = " + imgEntity.getUserEntity());
         return null;
     }
 }

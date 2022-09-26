@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -156,11 +157,12 @@ public class ImgService {
      *
      * @param page    页码
      * @param size    每页数量
-     * @param ownerId 用户id
+     * @param ownerId 用户id,如果为null则获取公共图片
      * @return 单个用户图片列表
      */
     public Page<ImgEntity> getPage(int page, int size, String ownerId) {
-        return this.getPage(page, size, ownerId, Optional.empty(), false);
+        return this.getPage(page, size, ownerId,
+                ownerId == null ? Optional.of(true) : Optional.empty(), false);
     }
 
     /**
@@ -181,5 +183,16 @@ public class ImgService {
             wrapper.and(i -> i.isNull(ImgEntity::getDateLimit).or().gt(ImgEntity::getDateLimit, LocalDateTime.now()));
         wrapper.orderByDesc(ImgEntity::getId);
         return this.getImgDaoService().page(new Page<>(page, size), wrapper);
+    }
+
+    /**
+     * 获取用户图片总数
+     *
+     * @param ownerId 用户id
+     * @return 用户图片总数
+     */
+    @Cacheable(cacheNames = ImgDaoService.KEY_USER_TOTAL, key = "#ownerId")
+    public int userTotal(String ownerId) {
+        return (int) this.getImgDaoService().count(Wrappers.lambdaQuery(ImgEntity.class).eq(ImgEntity::getOwner, ownerId));
     }
 }

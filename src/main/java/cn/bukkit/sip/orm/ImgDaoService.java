@@ -2,6 +2,7 @@ package cn.bukkit.sip.orm;
 
 import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.orm.mapper.ImgMapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,6 +13,20 @@ import java.util.Collection;
 
 @Service
 public class ImgDaoService extends ServiceImpl<ImgMapper, ImgEntity> {
+    public static final String KEY_USER_TOTAL = "img-user-total::";
+
+    @Override
+    @CacheEvict(cacheNames = KEY_USER_TOTAL, key = "#entity.owner")
+    public boolean saveOrUpdate(ImgEntity entity) {
+        return super.saveOrUpdate(entity);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = KEY_USER_TOTAL, key = "#entity.owner")
+    public boolean save(ImgEntity entity) {
+        return super.save(entity);
+    }
+
     @Override
     @Cacheable(value = "img", key = "#id", unless = "#result==null")
     public ImgEntity getById(Serializable id) {

@@ -10,10 +10,7 @@ import cn.bukkit.sip.utils.service.ImgService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.DecimalMax;
@@ -89,13 +86,21 @@ public class ImgController {
 
 
     @PostMapping("/list")
-    public RestData list(@NotNull @DecimalMin("1") Integer current, @NotNull @DecimalMax("20") Integer size) {
-        Page<ImgEntity> page = this.imgService.getPage(current, size);
+    public RestData list(@NotNull @DecimalMin("1") Integer current, @NotNull @DecimalMax("100") Integer size,
+                         @RequestParam(required = false, defaultValue = "false") boolean self, SapToken token) {
+        Page<ImgEntity> page = self ?
+                this.imgService.getPage(current, size, token.getPrincipal().getId()) :
+                this.imgService.getPage(current, size);
         return RestData.builder().data(new HashMap<>() {
             {
                 put("img", page.getRecords().stream().filter(r -> imgService.limitCheck(r)).collect(Collectors.toList()));
                 put("hasNext", page.getSize() >= size);
             }
         }).build();
+    }
+
+    @RequestMapping("/total")
+    public RestData userImgTotal(SapToken token) {
+        return RestData.builder().data(this.imgService.userTotal(token.getPrincipal().getId())).build();
     }
 }
