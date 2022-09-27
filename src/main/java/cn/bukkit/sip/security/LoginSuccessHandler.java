@@ -1,5 +1,6 @@
 package cn.bukkit.sip.security;
 
+import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.orm.UserDaoService;
 import cn.bukkit.sip.orm.entity.UserEntity;
 import cn.bukkit.sip.security.token.CasdoorAuthenticationToken;
@@ -25,8 +26,8 @@ import java.util.Optional;
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${web.url}")
-    String webUrl;
+    @Resource
+    SapConfig sapConfig;
     @Resource
     HttpSession session;
 
@@ -37,7 +38,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         if (authentication instanceof CasdoorAuthenticationToken)
             this.writeUserInfo((CasdoorAuthenticationToken) authentication);
-        this.getRedirectStrategy().sendRedirect(request, response, Optional.ofNullable(session.getAttribute("callback")).orElse(webUrl).toString());
+        this.getRedirectStrategy().sendRedirect(request, response, Optional.ofNullable(session.getAttribute("callback")).orElse(this.sapConfig.getUrl()).toString());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 

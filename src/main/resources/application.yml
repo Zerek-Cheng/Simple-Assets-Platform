@@ -1,3 +1,16 @@
+web:
+  url: http://192.168.100.114:8080
+  backend: http://192.168.100.114:8080/api/
+  casdoor-callback: ${web.url}/api/login/callback
+  allow-upload: # 允许上传的文件类型(不影响前端)
+    - jpg
+    - jpeg
+    - png
+    - gif
+    - bmp
+    - webp
+    - svg
+    - tiff
 server:
   port: 8081
   servlet:
@@ -38,19 +51,6 @@ spring:
       max-file-size: 10MB
       # 上传表单的最大值
       max-request-size: 10MB
-web:
-  url: http://192.168.100.114:8080
-  casdoor-callback: ${web.url}/api/login/callback
-  upload:
-    allow-upload: # 允许上传的文件类型(不影响前端)
-      - jpg
-      - jpeg
-      - png
-      - gif
-      - bmp
-      - webp
-      - svg
-      - tiff
 casdoor: # casdoor配置，必须与CasDoor对接，证书每一行结尾必须带上\r\n
   endpoint: https://oauth.xxxxxxxxxx.cn
   client-id: 54aba1exxxxxxxxxxxxx

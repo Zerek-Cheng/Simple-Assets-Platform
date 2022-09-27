@@ -1,9 +1,9 @@
 package cn.bukkit.sip.api;
 
+import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.pojo.RestData;
 import lombok.SneakyThrows;
 import org.casbin.casdoor.service.CasdoorAuthService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +17,9 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 @Controller
 public class AuthController {
-    @Value("${web.url}")
-    String webUrl;
-    @Value("${web.casdoor-callback}")
-    String callback;
+
+    @Resource
+    SapConfig sapConfig;
 
     @Resource
     private CasdoorAuthService casdoorAuthService;
@@ -36,7 +35,7 @@ public class AuthController {
                             String callback,
                             @RequestParam(required = false) boolean go) {
         this.session.setAttribute("callback", callback);
-        String url = casdoorAuthService.getSigninUrl(redirect == null || redirect.isBlank() ? this.callback : redirect);
+        String url = casdoorAuthService.getSigninUrl(redirect == null || redirect.isBlank() ? this.sapConfig.getCasdoorCallback() : redirect);
         if (go) {
             response.sendRedirect(url);
             return null;

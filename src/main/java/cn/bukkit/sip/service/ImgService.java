@@ -1,5 +1,6 @@
-package cn.bukkit.sip.utils.service;
+package cn.bukkit.sip.service;
 
+import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.exception.ImgNotExistException;
 import cn.bukkit.sip.exception.RestException;
 import cn.bukkit.sip.orm.ImgDaoService;
@@ -33,12 +34,12 @@ import java.util.Optional;
 
 @Service
 @Data
-@ConfigurationProperties(prefix = "web.upload")
 public class ImgService {
     @Value("${spring.servlet.multipart.location}")
     String path;
 
-    List<String> allowUpload;
+    @Resource
+    SapConfig sapConfig;
 
     @Resource
     ImgDaoService imgDaoService;
@@ -58,7 +59,7 @@ public class ImgService {
      */
     public ImgEntity uploaderImg(MultipartFile fileUpload, UserEntity userEntity, ImgMetaDto imgMetaDto) throws RestException, IOException {
         String fileType = Objects.requireNonNull(fileUpload.getOriginalFilename()).substring(fileUpload.getOriginalFilename().lastIndexOf("."));
-        if (this.allowUpload.stream().map((x) -> "." + x).noneMatch(fileType::equalsIgnoreCase))
+        if (this.sapConfig.getAllowUpload().stream().map((x) -> "." + x).noneMatch(fileType::equalsIgnoreCase))
             throw RestException.builder().message("不允许上传的文件类型").build();
         String fileName = new Date().getTime() + "-" + DigestUtil.md5Hex(fileUpload.getOriginalFilename()) + fileType;
         String filePath = path + fileName;

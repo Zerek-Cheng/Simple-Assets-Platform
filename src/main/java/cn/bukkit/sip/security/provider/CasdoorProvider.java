@@ -13,12 +13,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.UUID;
 
 @Component
 public class CasdoorProvider implements AuthenticationProvider {
-    @Autowired
+    @Resource
     private CasdoorAuthService casdoorAuthService;
 
     @Override
