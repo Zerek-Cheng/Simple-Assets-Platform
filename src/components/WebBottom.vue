@@ -14,13 +14,18 @@ export default {
   }),
 }
 </script>
-<style>
+<style lang="scss" scoped>
 #footer {
   font-size: 0.5rem;
   text-align: center;
-  background-color: #555555;
+  background-color: gray;
   opacity: 50%;
   box-shadow: 0 -2px 20px #333333;
+
+  &:hover {
+    opacity: 75%;
+    box-shadow: 0;
+  }
 }
 
 </style>

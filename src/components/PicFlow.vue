@@ -51,6 +51,7 @@ export default {
       const loading = this.$loading();
       this.$api.getImgList(this.page, this.size).then((res) => {
         this.imgUrl = [...res.data.data.img]
+      }).finally(() => {
         loading.close();
       })
     },

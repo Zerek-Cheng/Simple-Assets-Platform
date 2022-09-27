@@ -109,7 +109,7 @@ export default {
 
   .el-card {
     border-radius: 1vw;
-    background: #f2f2f2;
+    background: rgba(222, 217, 217, 0.5);
     display: inline-flex;
     justify-content: center;
     align-items: flex-start;

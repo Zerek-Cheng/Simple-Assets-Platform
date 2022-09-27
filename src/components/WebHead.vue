@@ -2,12 +2,12 @@
   <el-row id="head-container">
     <el-col :md="{span:14,push:5}" :xs="24">
       <el-col :xs="24" class="hidden-md-and-up" id="h-left">
-        <el-link id="h-site-url" @click="$router.push({name: 'home'})">
+        <el-link id="header-site-logo" @click="$router.push({name: 'home'})">
           {{ SITE_NAME }}
         </el-link>
       </el-col>
       <el-col :md="7" id="h-left">
-        <el-link id="h-site-url" @click="$router.push({name: 'home'})" class="hidden-sm-and-down">
+        <el-link id="header-site-logo" @click="$router.push({name: 'home'})" class="hidden-sm-and-down">
           {{ SITE_NAME }}
         </el-link>
         <el-menu
@@ -60,11 +60,18 @@
             <template slot="title">
               <el-avatar :src="this.user.avatar" shape="square" size="large"/>
             </template>
+            <el-menu-item index="/gallery"
+                          @click="$router.push({name: 'gallery'})">我的图库
+            </el-menu-item>
             <el-menu-item index="/price"
-                          @click="$router.push({name: 'gallery'})">我的图库</el-menu-item>
-            <el-menu-item index="/price" @click="$router.push({name: 'price'})">套餐&费用</el-menu-item>
-            <el-menu-item index="/safe" @click="profile">个人中心</el-menu-item>
-            <el-menu-item index="/logout" @click="logout">退出</el-menu-item>
+                          @click="$router.push({name: 'price'})">套餐&费用
+            </el-menu-item>
+            <el-menu-item index="/safe"
+                          @click="profile">个人中心
+            </el-menu-item>
+            <el-menu-item index="/logout"
+                          @click="logout">退出
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-col>
@@ -77,7 +84,6 @@ import {mapGetters} from 'vuex';
 export default {
   name: 'WebHead',
   data: () => ({
-    input: '',
     SITE_NAME: process.env.VUE_APP_SITE_NAME,
   }),
   computed: {
@@ -128,20 +134,52 @@ export default {
   .el-menu-item {
     background-color: #363636 !important;
     white-space: nowrap;
-  }
-
-  .el-menu-item:hover {
-    background-color: #606266 !important;
+    &:hover {
+      background-color: #606266 !important;
+    }
   }
 }
 </style>
 <style scoped lang="scss">
+// header整体
 #head-container {
-  background-color: #363636;
-  box-shadow: 0 1px 10px #333333;
+  background-color: #24292F;
+  box-shadow: 0 2px 10px black;
+
+  .el-menu {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    border-bottom: none !important;
+  }
+
+  .el-menu-item {
+    flex: 1 1 100%;
+    &:hover {
+      background-color: #606266 !important;
+    }
+  }
+
+  // 左侧菜单
+  #h-left {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  // 右侧登录登录注册
+  #h-right {
+    float: right;
+    text-align: center;
+  }
+
+  // 登录后的用户选项
+  #h-menu-user {
+    justify-content: center;
+  }
 }
 
-#h-site-url {
+// 顶部站点名称
+#header-site-logo {
   font-size: 2rem;
   background: linear-gradient(to left top, blue 0%, #20a9a4 45%, #14ded7 100%);
   -webkit-background-clip: text;
@@ -149,28 +187,5 @@ export default {
   padding-right: 1vh;
 }
 
-.el-menu {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  width: 100%;
-  border-bottom: none !important;
-}
 
-.el-menu-item {
-  flex: 1 1 100%;
-}
-
-#h-left {
-  white-space: nowrap;
-  text-align: center;
-}
-
-#h-right {
-  float: right;
-  text-align: center;
-}
-
-#h-menu-user {
-  justify-content: center;
-}
 </style>

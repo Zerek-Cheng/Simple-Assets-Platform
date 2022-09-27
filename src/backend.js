@@ -2,6 +2,9 @@ import axios from 'axios';
 
 export default (http) => {
     return {
+        getImgUrl(id) {
+            return `${http.defaults.baseURL}/api/img/get/${id}`;
+        },
         getCsrf() {
             return axios.request({
                 url: '/api/test/csrf',
@@ -41,19 +44,18 @@ export default (http) => {
                 method: 'post',
             })
         },
-        getImgUrl(id) {
-            return `/api/img/get/${id}`
-        },
-        getImgList(page = 1, length = 12, self = false) {
-            return http.request({
+        getImgList(page = 1, length = 12, self = false, search = null) {
+            const config = {
                 method: 'post',
                 url: '/api/img/list',
                 data: {
                     current: page,
                     size: length,
-                    self
+                    self,
                 }
-            })
+            };
+            if (search) config.data.search = search;
+            return http.request(config);
         },
         getImgInfo(id) {
             return http.request({
@@ -68,10 +70,10 @@ export default (http) => {
                 data,
             })
         },
-        getUserImgTotal() {
+        delImg(id) {
             return http.request({
                 method: 'post',
-                url: '/api/img/total'
+                url: `/api/img/del/${id}`,
             })
         }
     };

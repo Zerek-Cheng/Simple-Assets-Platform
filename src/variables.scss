@@ -1,11 +1,9 @@
 $SystemBlue: rgba(12, 69, 189, 0.65);
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   border: 0;
-  //font-family: 'Microsoft YaHei', sans-serif !important;
 }
 
 .flex-center {
@@ -26,15 +24,13 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-.el-card { // 整个上传卡片
+.el-card {
   margin-top: 5vh;
   padding-top: 1vh;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-
   .el-card__body {
     padding-top: 0.5em;
   }
-
   .el-card__header {
     width: 100%;
     padding: 0.5rem 1rem;
@@ -42,7 +38,6 @@ input::-webkit-inner-spin-button {
     align-items: center;
     flex-wrap: wrap;
     text-wrap: none;
-
     #title-col {
       @media screen and (max-width: 990px) {
         display: inline-block !important;
@@ -53,11 +48,9 @@ input::-webkit-inner-spin-button {
     }
   }
 }
-
 .el-table .el-table__cell {
   padding: 1rem 0;
 }
-
 .el-form-item {
   margin-bottom: 1rem;
 }

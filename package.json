@@ -1,5 +1,5 @@
 {
-  "name": "element",
+  "name": "simple-assets-platform-template",
   "version": "1.0.0",
   "scripts": {
     "serve": "cross-env NODE_ENV=development vue-cli-service serve && webpack-dev-server",
@@ -19,9 +19,9 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.1",
+    "@babel/core": "^7.19.3",
     "@babel/eslint-parser": "^7.19.1",
-    "@babel/preset-env": "^7.19.1",
+    "@babel/preset-env": "^7.19.3",
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-plugin-router": "^5.0.8",

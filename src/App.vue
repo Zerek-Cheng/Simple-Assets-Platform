@@ -58,6 +58,7 @@ export default {
 }
 
 #content {
+  margin-top: 2px;
   margin-bottom: 5vh;
 }
 
