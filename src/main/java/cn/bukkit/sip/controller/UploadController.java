@@ -1,4 +1,4 @@
-package cn.bukkit.sip.api;
+package cn.bukkit.sip.controller;
 
 import cn.bukkit.sip.orm.UserDaoService;
 import cn.bukkit.sip.orm.entity.ImgEntity;

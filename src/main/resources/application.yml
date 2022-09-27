@@ -11,6 +11,21 @@ web:
     - webp
     - svg
     - tiff
+  # 存储类型  local-file-本地存储
+  stronge-type: local-file
+  stronge-config:
+    local-file:
+      local-path: /tmp/
+    qiniu:
+      access-key: xxx
+      secret-key: xxx
+      bucket: xxx
+      domain: xxx
+    aliyun:
+      access-key: xxx
+      secret-key: xxx
+      bucket: xxx
+      domain: xxx
 server:
   port: 8081
   servlet:

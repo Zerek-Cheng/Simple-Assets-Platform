@@ -1,5 +1,7 @@
 package cn.bukkit.sip.stronge;
 
+import java.util.Map;
+
 public interface SapStronge {
     /**
      * @return 存储器的名称
@@ -11,8 +13,9 @@ public interface SapStronge {
      *
      * @param path 文件路径
      * @param data 文件数据
+     * @return 文件对象
      */
-    void saveFile(String path, byte[] data);
+    Object saveFile(String path, byte[] data);
 
     /**
      * 文件是否存在
@@ -34,6 +37,14 @@ public interface SapStronge {
      * 删除文件
      *
      * @param path 文件路径
+     * @return 是否删除成功
      */
-    void deleteFile(String path);
+    boolean deleteFile(String path);
+
+    /**
+     * 获取存储配置
+     *
+     * @return 存储配置
+     */
+    Map<String, String> getConfig();
 }

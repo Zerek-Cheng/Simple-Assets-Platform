@@ -44,13 +44,52 @@
 ### application.yml Example:
 
 ```yaml
+web:
+  url: http://192.168.100.114:8080
+  backend: http://192.168.100.114:8080/api/
+  casdoor-callback: ${web.url}/api/login/callback
+  allow-upload: # 允许上传的文件类型(不影响前端)
+    - jpg
+    - jpeg
+    - png
+    - gif
+    - bmp
+    - webp
+    - svg
+    - tiff
+  # 存储类型  local-file-本地存储
+  stronge-type: local-file
+  stronge-config:
+    local-file:
+      local-path: /tmp/
+    qiniu:
+      access-key: xxx
+      secret-key: xxx
+      bucket: xxx
+      domain: xxx
+    aliyun:
+      access-key: xxx
+      secret-key: xxx
+      bucket: xxx
+      domain: xxx
+server:
+  port: 8081
+  servlet:
+    session:
+      cookie: # 浅用PHPSESSIONID做个伪装
+        name: PHPSESSIONID
+  tomcat:
+    max-swallow-size: -1 # 上传文件大小限制
 spring:
+  profiles:
+    active: dev
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
+      # 使用jdbcUrl
       url: jdbc:mysql://192.168.xxx.5:3306/spring?useUnicode=true&characterEncoding=utf-8&useSSL=false&useAffectedRows=true&serverTimezone=GMT%2B8
       username: xxxxxx
       password: xxxxxx
@@ -67,23 +106,13 @@ spring:
     client-type: jedis
   servlet:
     multipart:
-      location: D:\\dev\\tmp\\
-
-web:
-  url: http://192.168.100.114:8080
-  casdoor-callback: ${web.url}/api/login/callback
-  upload:
-    allow-upload:
-      - jpg
-      - jpeg
-      - png
-      - gif
-      - bmp
-      - webp
-      - svg
-      - tiff
-
-casdoor:
+      # 上传文件的位置 windows格式为 D:\\upload\\xxx\\
+      location: /tmp/
+      # 上传文件的最大值
+      max-file-size: 10MB
+      # 上传表单的最大值
+      max-request-size: 10MB
+casdoor: # casdoor配置，必须与CasDoor对接，证书每一行结尾必须带上\r\n
   endpoint: https://oauth.xxxxxxxxxx.cn
   client-id: 54aba1exxxxxxxxxxxxx
   client-secret: 58a93442745950554ea2a980dxxxxxxxxxxxx
@@ -92,18 +121,13 @@ casdoor:
   certificate: "-----BEGIN CERTIFICATE-----\r\n
 MIIE2TCCAsGgAwIBAgIDAeJAMA0GCSqGSIb3DQEBCwUAMCYxDjAMBgNVBAoTBWFk\r\n
 -----END CERTIFICATE-----"
-server:
-  port: 8081
-  servlet:
-    session:
-      cookie:
-        name: PHPSESSIONID
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: cn.bukkit.sip.orm.entity
   configuration:
     cache-enabled: true
   type-handlers-package: cn.bukkit.sip.orm.handler
+
 ```
 
 ### Nginx conf Example

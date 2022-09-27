@@ -3,11 +3,13 @@ package cn.bukkit.sip.service;
 import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.exception.ImgNotExistException;
 import cn.bukkit.sip.exception.RestException;
+import cn.bukkit.sip.exception.UploadException;
 import cn.bukkit.sip.orm.ImgDaoService;
 import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.orm.entity.UserEntity;
 import cn.bukkit.sip.pojo.ImgMetaDto;
 import cn.bukkit.sip.security.token.SapToken;
+import cn.bukkit.sip.stronge.SapStronge;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -15,6 +17,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,12 +37,14 @@ import java.util.Optional;
 
 @Service
 @Data
+@Slf4j
 public class ImgService {
-    @Value("${spring.servlet.multipart.location}")
-    String path;
 
     @Resource
     SapConfig sapConfig;
+
+    @Resource
+    SapStronge sapStronge;
 
     @Resource
     ImgDaoService imgDaoService;
@@ -62,10 +67,9 @@ public class ImgService {
         if (this.sapConfig.getAllowUpload().stream().map((x) -> "." + x).noneMatch(fileType::equalsIgnoreCase))
             throw RestException.builder().message("不允许上传的文件类型").build();
         String fileName = new Date().getTime() + "-" + DigestUtil.md5Hex(fileUpload.getOriginalFilename()) + fileType;
-        String filePath = path + fileName;
-        File file = new File(filePath);
-        if (file.exists()) throw RestException.builder().message("文件已存在").build();
-        fileUpload.transferTo(file);
+        if (this.sapStronge.isExist(fileName)) throw new UploadException("文件已存在");
+        this.sapStronge.saveFile(fileName, fileUpload.getBytes());
+        log.debug("上传文件:{}-{}-{}-{}", sapStronge.getName(), userEntity.getId(), fileName, fileUpload.getSize());
         ImgEntity imgEntity = ImgEntity.builder().name(fileUpload.getOriginalFilename()).path(fileName).size((int) fileUpload.getSize()).timesLimit(Optional.ofNullable(imgMetaDto.getTimesLimit()).orElse(0)).owner(Optional.ofNullable(userEntity).map(UserEntity::getId).orElse("")).build();
         imgEntity.setDateLimitFromTimestamp(Optional.ofNullable(imgMetaDto.getDateLimit()).orElse(253402271999000L) / 1000);
         this.imgDaoService.saveOrUpdate(imgEntity);
@@ -81,8 +85,7 @@ public class ImgService {
     public byte[] loadImg(Long id) {
         ImgEntity imgEntity = this.imgDaoService.getById(id);
         if (imgEntity == null) throw new ImgNotExistException();
-        File imgFile = new File(this.path + imgEntity.getPath());
-        return Optional.ofNullable(FileUtil.readBytes(imgFile)).orElseThrow(ImgNotExistException::new);
+        return Optional.ofNullable(this.sapStronge.getFile(imgEntity.getPath())).orElseThrow(ImgNotExistException::new);
     }
 
     /**

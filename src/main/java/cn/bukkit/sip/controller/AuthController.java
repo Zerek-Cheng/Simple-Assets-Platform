@@ -1,4 +1,4 @@
-package cn.bukkit.sip.api;
+package cn.bukkit.sip.controller;
 
 import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.pojo.RestData;
