@@ -147,7 +147,7 @@ public class ImgService {
      * @return 公共列表
      */
     public Page<ImgEntity> getPage(int page, int size) {
-        return this.getPage(page, size, null, Optional.of(true), true);
+        return this.getPage(page, size, null, Optional.of(true), true, null);
     }
 
     /**
@@ -160,7 +160,12 @@ public class ImgService {
      */
     public Page<ImgEntity> getPage(int page, int size, String ownerId) {
         return this.getPage(page, size, ownerId,
-                ownerId == null ? Optional.of(true) : Optional.empty(), false);
+                ownerId == null ? Optional.of(true) : Optional.empty(), false, null);
+    }
+
+    public Page<ImgEntity> getPage(int page, int size, String ownerId, String nameLike) {
+        return this.getPage(page, size, ownerId,
+                ownerId == null ? Optional.of(true) : Optional.empty(), false, nameLike);
     }
 
     /**
@@ -173,12 +178,13 @@ public class ImgService {
      * @param checkDateLimit 是否检查时间限制
      * @return 图片列表
      */
-    public Page<ImgEntity> getPage(int page, int size, String ownerId, Optional<Boolean> isPublic, boolean checkDateLimit) {
+    public Page<ImgEntity> getPage(int page, int size, String ownerId, Optional<Boolean> isPublic, boolean checkDateLimit, String nameLike) {
         LambdaQueryWrapper<ImgEntity> wrapper = Wrappers.lambdaQuery();
         if (isPublic.isPresent()) wrapper.eq(ImgEntity::getIsPublic, isPublic.orElse(true));
         if (ownerId != null && !ownerId.isBlank()) wrapper.eq(ImgEntity::getOwner, ownerId);
         if (checkDateLimit)
             wrapper.and(i -> i.isNull(ImgEntity::getDateLimit).or().gt(ImgEntity::getDateLimit, LocalDateTime.now()));
+        if (nameLike != null && !nameLike.isBlank()) wrapper.like(ImgEntity::getName, nameLike);
         wrapper.orderByDesc(ImgEntity::getId);
         return this.getImgDaoService().page(new Page<>(page, size), wrapper);
     }

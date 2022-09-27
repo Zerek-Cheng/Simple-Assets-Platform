@@ -17,6 +17,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequestMapping("/img")
@@ -87,14 +88,17 @@ public class ImgController {
 
     @PostMapping("/list")
     public RestData list(@NotNull @DecimalMin("1") Integer current, @NotNull @DecimalMax("100") Integer size,
-                         @RequestParam(required = false, defaultValue = "false") boolean self, SapToken token) {
+                         @RequestParam(required = false, defaultValue = "false") boolean self,
+                         @RequestParam(required = false) String search, SapToken token) {
         Page<ImgEntity> page = self ?
-                this.imgService.getPage(current, size, token.getPrincipal().getId()) :
+                this.imgService.getPage(current, size, token.getPrincipal().getId(),
+                        "%" + Optional.ofNullable(search).orElse("").replace(" ", "%") + "%") :
                 this.imgService.getPage(current, size);
         return RestData.builder().data(new HashMap<>() {
             {
-                put("img", page.getRecords().stream().filter(r -> imgService.limitCheck(r)).collect(Collectors.toList()));
+                put("img", self ? page.getRecords() : page.getRecords().stream().filter(r -> imgService.limitCheck(r)).collect(Collectors.toList()));
                 put("hasNext", page.getSize() >= size);
+                put("total", page.getTotal());
             }
         }).build();
     }
