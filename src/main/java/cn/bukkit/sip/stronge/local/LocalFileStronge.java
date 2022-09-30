@@ -1,35 +1,39 @@
 package cn.bukkit.sip.stronge.local;
 
+import cn.bukkit.sip.config.StrongeConfig;
+import cn.bukkit.sip.exception.UploadException;
 import cn.bukkit.sip.stronge.LocalStronge;
 import cn.hutool.core.io.FileUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Data
-@Component
-@ConditionalOnProperty(prefix = "web", name = "stronge-type", havingValue = "local-file", matchIfMissing = true)
-@ConfigurationProperties(prefix = "web.stronge-config.local-file")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocalFileStronge extends LocalStronge {
     String localPath;
+    String name;
 
     @Override
-    public String getName() {
-        return "LocalFileStronge";
+    public void init(String name, StrongeConfig config) {
+        super.init(name, config);
+        this.localPath = config.getPath();
+        this.name = name;
     }
 
     @Override
     public File saveFile(String path, byte[] data) {
         File file = new File(localPath + path);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        if (file.exists()) throw new RuntimeException("文件已经存在");
+        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+        if (file.exists()) throw new UploadException("文件已经存在");
         file = FileUtil.writeBytes(data, file);
         return file.exists() ? file : null;
     }

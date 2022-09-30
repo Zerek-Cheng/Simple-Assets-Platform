@@ -56,6 +56,9 @@ public class ImgEntity implements Serializable {
     @JsonIgnore
     private Boolean isDeleted = false;
 
+    @TableField("stronge")
+    private String stronge;
+
     @JsonIgnore
     @TableField(exist = false)
     final private UserEntity userEntity = null;

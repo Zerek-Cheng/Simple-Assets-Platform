@@ -11,17 +11,23 @@ web:
     - webp
     - svg
     - tiff
-  # 存储类型  local-file-本地存储
+  # 默认存储类型  local-file-本地存储
   stronge-type: local-file
   stronge-config:
     local-file:
-      local-path: /tmp/
+      enabled: true
+      type: local-file
+      path: /tmp/
     qiniu:
+      enabled: false
+      type: qiniu
       access-key: xxx
       secret-key: xxx
       bucket: xxx
       domain: xxx
     aliyun:
+      enabled: false
+      type: aliyun
       access-key: xxx
       secret-key: xxx
       bucket: xxx

@@ -7,6 +7,7 @@ import cn.bukkit.sip.pojo.ImgMetaDto;
 import cn.bukkit.sip.pojo.RestData;
 import cn.bukkit.sip.security.token.SapToken;
 import cn.bukkit.sip.service.ImgService;
+import cn.bukkit.sip.service.StrongeService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ public class ImgController {
     String path;
     @Resource
     ImgService imgService;
+
 
     // 显示图片
     @RequestMapping(path = "/get/{id}", produces = "image/*;charset=utf-8")

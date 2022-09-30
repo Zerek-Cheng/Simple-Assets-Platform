@@ -1,5 +1,6 @@
 package cn.bukkit.sip.controller;
 
+import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.exception.RestException;
 import cn.bukkit.sip.pojo.RestData;
 import cn.bukkit.sip.service.ImgService;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/test")
 public class TestController {
+    @Resource
+    SapConfig config;
 
     @GetMapping("/csrf")
     public RestData test(CsrfToken token) {
@@ -41,6 +44,6 @@ public class TestController {
 
     @GetMapping("/test")
     public Object test() {
-        return null;
+        return config.getStrongeConfig();
     }
 }

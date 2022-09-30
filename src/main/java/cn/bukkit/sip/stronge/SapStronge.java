@@ -1,5 +1,8 @@
 package cn.bukkit.sip.stronge;
 
+import cn.bukkit.sip.config.SapConfig;
+import cn.bukkit.sip.config.StrongeConfig;
+
 import java.util.Map;
 
 public interface SapStronge {
@@ -47,4 +50,6 @@ public interface SapStronge {
      * @return 存储配置
      */
     Map<String, String> getConfig();
+
+    default void init(String name,StrongeConfig config){}
 }

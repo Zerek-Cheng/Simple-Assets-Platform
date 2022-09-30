@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -73,12 +74,12 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
         return jackson2JsonRedisSerializer;
     }
 
-    //自定义cacheManager缓存管理器
+    /**
+     * 自定义cacheManager缓存管理器
+     */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory, Jackson2JsonRedisSerializer<Object> jsonRedisSerializer) {
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
-
-
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ZERO)
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
@@ -91,6 +92,9 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
                 .build();
     }
 
+    /**
+     * 自定义带缓存时间的cacheManager缓存管理器
+     */
     private Map<String, RedisCacheConfiguration> getRedisCacheConfigurationMap(Jackson2JsonRedisSerializer<Object> jsonRedisSerializer) {
         Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
         List<Class<?>> clsList = ClassUtil.scanPackage("cn.bukkit.sip").stream().toList();
@@ -127,6 +131,9 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
         return interceptor;
     }
 
+    /**
+     * 动态加载配置文件
+     */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         System.out.println("SimpleImgPlatformApplication Environment PostProcessor");
@@ -138,6 +145,9 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
         });
     }
 
+    /**
+     * 解决上传文件大小限制
+     */
     @Bean
     public ServletWebServerFactory tomcatEmbedded() {
         TomcatServletWebServerFactory tomcat = new org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory();
