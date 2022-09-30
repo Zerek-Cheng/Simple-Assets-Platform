@@ -1,0 +1,2 @@
+"use strict";(globalThis["webpackChunksimple_assets_platform_template"]=globalThis["webpackChunksimple_assets_platform_template"]||[]).push([[509],{7106:(e,l,s)=>{s.r(l),s.d(l,{default:()=>p});var t=function(){var e=this,l=e._self._c;return l("PicFlow")},a=[];const n={name:"PicView",components:{PicFlow:()=>s.e(985).then(s.bind(s,9985))}},i=n;var o=s(3026),c=(0,o.Z)(i,t,a,!1,null,null,null);const p=c.exports}}]);
+//# sourceMappingURL=pics-e4f7ac7f.js.map

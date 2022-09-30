@@ -1,0 +1,2 @@
+"use strict";(globalThis["webpackChunksimple_assets_platform_template"]=globalThis["webpackChunksimple_assets_platform_template"]||[]).push([[121],{6193:(l,e,s)=>{s.r(e),s.d(e,{default:()=>u});var a=function(){var l=this,e=l._self._c;return e("el-row",[e("el-col",{attrs:{md:{span:16,push:4},xs:{span:22,push:1}}},[e("GalleryTable")],1)],1)},t=[];const n={name:"GalleryView",components:{GalleryTable:()=>s.e(889).then(s.bind(s,5889))}},p=n;var r=s(3026),o=(0,r.Z)(p,a,t,!1,null,null,null);const u=o.exports}}]);
+//# sourceMappingURL=gallery-2cf995bc.js.map
