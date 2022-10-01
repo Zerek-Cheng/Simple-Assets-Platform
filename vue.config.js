@@ -60,19 +60,19 @@ module.exports = defineConfig({
                 vuex: 'Vuex',
                 axios: 'axios',
                 lodash: '_'
-            })
+            }).end();
             config.plugin('html-index')
                 .tap((args) => {
                     args[0].cdn = cdn
                     return args
-                })
+                }).end();
             config.plugin('extract-css').tap((args) => {
                 args[0].filename = 'css/[name]-[contenthash:8].css'
                 args[0].chunkFilename = 'css/[name]-[contenthash:8].css'
                 return args;
-            })
+            }).end();
         } else {
-            config.devtool('source-map')
+            config.devtool('source-map').end();
         }
         config.output.filename('js/[name]-[contenthash:8].js').chunkFilename('js/[name]-[contenthash:8].js').end()
     },

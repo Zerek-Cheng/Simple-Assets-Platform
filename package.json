@@ -8,8 +8,8 @@
     "report": "vue-cli-service build --report"
   },
   "dependencies": {
-    "axios": "^0.27.2",
-    "core-js": "^3.25.3",
+    "axios": "^1.0.0",
+    "core-js": "^3.25.5",
     "element-ui": "^2.15.10",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
@@ -33,7 +33,7 @@
     "eslint-config-ali": "^14.0.2",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-vue": "^9.5.1",
+    "eslint-plugin-vue": "^9.6.0",
     "sass": "^1.55.0",
     "sass-loader": "^13.0.2",
     "style-resources-loader": "^1.5.0",

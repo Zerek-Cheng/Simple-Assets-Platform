@@ -88,10 +88,13 @@ export default {
         this.info = res.data.data.info;
         this.times = res.data.data.times;
         this.isPublic = this.info.isPublic;
-        this.dateLimit = this.info.dateLimit ? new Date(this.info.dateLimit * 1000) : null;
+        this.dateLimit = !this.info.dateLimit ? null : new Date(this.info.dateLimit * 1000);
         this.timesLimit = !this.info.timesLimit ? null : this.info.timesLimit;
-        const pageUrl = `${window.origin}/pic-info/${this.pic}`
-        const originUrl = `${window.origin}${this.$api.getImgUrl(this.pic)}`;
+        const pageUrl = `${window.location.origin}${this.$router.resolve({
+          name: 'pic-info',
+          params: {pic: this.pic}
+        }).href}`;
+        const originUrl = `${this.$api.getImgUrl(this.pic)}`;
         this.templates = [
           ['Markdown', `[![${this.info.name}](${originUrl})](${pageUrl})]`],
           ['BBCODE', `[url=${pageUrl}/pic-info][img]${originUrl}[/img][/url]`],

@@ -3,10 +3,10 @@
     <el-col :md="{span:16,push: 4}" :xs="{span:22,push:1}">
       <el-card>
         <template v-slot:header>
-          <el-col style="display: inline-block;width: auto;margin-right: 1.5em;" id="title-col">
+          <el-col style="display: inline-block" :xs="24" :md="4" id="title-col">
             <h1>图片上传</h1>
           </el-col>
-          <el-col id="upload-setting" :xs="24" :md="18" v-if="user">
+          <el-col id="upload-setting" :xs="24" :md="{span:19,offset:1}" v-if="user">
             <el-checkbox v-model="isPublic"
                          :value="true"
                          ref="isPublic">
@@ -23,6 +23,14 @@
                       id="upload-setting-times-limit">
               <template slot="append">次</template>
             </el-input>
+            <el-select v-model="storage" placeholder="存储位置">
+              <el-option
+                  v-for="item in storageList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
           </el-col>
         </template>
         <el-alert
@@ -71,6 +79,8 @@ export default {
     isPublic: true,
     dateLimit: null,
     timesLimit: null,
+    storageList: null,
+    storage: null,
   }),
   watch: {
     isPublic(v) {
@@ -100,12 +110,17 @@ export default {
     this.isPublic = this.$cookies.get('isPublic') === undefined ? true : !!JSON.parse(this.$cookies.get('isPublic'));
     this.dateLimit = this.$cookies.get('dateLimit') === undefined ? null : new Date(this.$cookies.get('dateLimit'));
     this.timesLimit = this.$cookies.get('timesLimit') === undefined ? null : this.$cookies.get('timesLimit');
+    this.$api.getStorageList().then((res) => {
+      this.storageList = res.data.data.list;
+      this.storage = res.data.data.default;
+    });
   },
   methods: {
     completeData(config) {
       const data = {};
       data.isPublic = this.isPublic;
       data.file = config.file;
+      data.storage = this.storage;
       if (this.dateLimit) data.dataLimit = this.dateLimit.getTime();
       if (this.timesLimit) data.timesLimit = this.timesLimit;
       return data;
@@ -169,14 +184,13 @@ export default {
 
   * {
     width: auto;
-    font-size: 1rem;
   }
 
   @media screen and (max-width: 990px) {
     text-align: center;
     flex-wrap: wrap;
     * {
-      line-height: 300%;
+      line-height: 250%;
       width: 100%;
     }
   }

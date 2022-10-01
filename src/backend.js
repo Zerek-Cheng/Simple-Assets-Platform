@@ -75,6 +75,12 @@ export default (http) => {
                 method: 'post',
                 url: `/api/img/del/${id}`,
             })
+        },
+        getStorageList() {
+            return http.request({
+                method: 'get',
+                url: '/api/storage/list',
+            })
         }
     };
 }
