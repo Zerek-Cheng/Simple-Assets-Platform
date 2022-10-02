@@ -72,8 +72,9 @@ public class AuthController {
 
     @ResponseBody
     @RequestMapping("/logout")
-    public RestData logout() {
+    public RestData logout(HttpSession session) {
         SecurityContextHolder.getContext().setAuthentication(null);
+        session.invalidate();
         return RestData.builder().build();
     }
 

@@ -3,12 +3,14 @@ package cn.bukkit.sip.service;
 import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.exception.ImgNotExistException;
 import cn.bukkit.sip.exception.RestException;
+import cn.bukkit.sip.exception.StrongeNotExistException;
 import cn.bukkit.sip.exception.UploadException;
 import cn.bukkit.sip.orm.ImgDaoService;
 import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.orm.entity.UserEntity;
 import cn.bukkit.sip.pojo.ImgMetaDto;
 import cn.bukkit.sip.security.token.SapToken;
+import cn.bukkit.sip.stronge.SapStronge;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -29,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 @Data
@@ -64,9 +67,13 @@ public class ImgService {
         String fileName = new Date().getTime() + "-" + DigestUtil.md5Hex(fileUpload.getOriginalFilename()) + fileType;
         if (this.strongeService.getDefault().isExist(fileName)) throw new UploadException("文件已存在");
         this.strongeService.getDefault().saveFile(fileName, fileUpload.getBytes());
-        log.debug("上传文件:{}-{}-{}-{}", this.strongeService.getDefault().getName(), userEntity.getId(), fileName, fileUpload.getSize());
-        ImgEntity imgEntity = ImgEntity.builder().name(fileUpload.getOriginalFilename()).path(fileName).size((int) fileUpload.getSize()).timesLimit(Optional.ofNullable(imgMetaDto.getTimesLimit()).orElse(0)).owner(Optional.ofNullable(userEntity).map(UserEntity::getId).orElse("")).build();
-        imgEntity.setDateLimitFromTimestamp(Optional.ofNullable(imgMetaDto.getDateLimit()).orElse(253402271999000L) / 1000);
+        log.debug("上传文件:{}-{}-{}-{}", this.strongeService.getDefault().getName(), userEntity, fileName, fileUpload.getSize());
+        ImgEntity imgEntity = ImgEntity.builder()
+                .name(fileUpload.getOriginalFilename())
+                .path(fileName).size((int) fileUpload.getSize())
+                .timesLimit(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getTimesLimit).orElse(0))
+                .owner(Optional.ofNullable(userEntity).map(UserEntity::getId).orElse("")).build();
+        imgEntity.setDateLimitFromTimestamp(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getDateLimit).orElse(253402271999000L) / 1000);
         this.imgDaoService.saveOrUpdate(imgEntity);
         return imgEntity;
     }
@@ -77,10 +84,15 @@ public class ImgService {
      * @param id 图片id
      * @return 图片
      */
-    public byte[] loadImg(Long id) {
+    public Object loadImg(Long id) {
         ImgEntity imgEntity = this.imgDaoService.getById(id);
         if (imgEntity == null) throw new ImgNotExistException();
-        return Optional.ofNullable(this.strongeService.getDefault().getFile(imgEntity.getPath())).orElseThrow(ImgNotExistException::new);
+        SapStronge stronge = this.strongeService.getImgStronge(imgEntity);
+        Object file = Optional.ofNullable(stronge).orElseThrow(StrongeNotExistException::new).getFile(imgEntity.getPath());
+        if (file instanceof byte[]) return file;
+        if (stronge.isOrigin() && file instanceof String && Pattern.matches("http(s)?://.*", (String) file))
+            return "redirect:" + file;
+        return file;
     }
 
     /**
@@ -102,8 +114,8 @@ public class ImgService {
     public boolean permissionCheck(ImgEntity imgEntity, SapToken authentication) {
         if (imgEntity == null) throw new ImgNotExistException();
         return !imgEntity.getOwner().isBlank() && (authentication != null &&
-                (imgEntity.getOwner().equalsIgnoreCase(authentication.getPrincipal().getId()) ||
-                        authentication.getPrincipal().getRoles().stream().anyMatch(role -> role.getName().contains("admin")))
+                (imgEntity.getOwner().equalsIgnoreCase(authentication.getPrincipal().getId()) || //为本人
+                        authentication.getPrincipal().getRoles().stream().anyMatch(role -> role.getName().contains("admin"))) //为管理员
         );
     }
 
@@ -145,7 +157,7 @@ public class ImgService {
      * @param size 每页数量
      * @return 公共列表
      */
-    public Page<ImgEntity> getPage(int page, int size) {
+    public Page<ImgEntity> getPublicPage(int page, int size) {
         return this.getPage(page, size, null, Optional.of(true), true, null);
     }
 
@@ -157,12 +169,12 @@ public class ImgService {
      * @param ownerId 用户id,如果为null则获取公共图片
      * @return 单个用户图片列表
      */
-    public Page<ImgEntity> getPage(int page, int size, String ownerId) {
+    public Page<ImgEntity> getUserPage(int page, int size, String ownerId) {
         return this.getPage(page, size, ownerId,
                 ownerId == null ? Optional.of(true) : Optional.empty(), false, null);
     }
 
-    public Page<ImgEntity> getPage(int page, int size, String ownerId, String nameLike) {
+    public Page<ImgEntity> getUserPage(int page, int size, String ownerId, String nameLike) {
         return this.getPage(page, size, ownerId,
                 ownerId == null ? Optional.of(true) : Optional.empty(), false, nameLike);
     }

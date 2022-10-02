@@ -10,8 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Data
@@ -53,12 +51,4 @@ public class LocalFileStronge extends LocalStronge {
         return FileUtil.del(localPath + path);
     }
 
-    @Override
-    public Map<String, String> getConfig() {
-        return new HashMap<>() {
-            {
-                put("localPath", localPath);
-            }
-        };
-    }
 }

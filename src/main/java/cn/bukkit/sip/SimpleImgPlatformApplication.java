@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -34,6 +33,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -45,7 +46,7 @@ import java.util.*;
 @EnableScheduling
 @EnableCaching(proxyTargetClass = true)
 @EnableAsync(proxyTargetClass = true)
-@EnableRedisHttpSession
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 60 * 24 * 31)
 @Slf4j
 public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
 
@@ -131,6 +132,16 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
         return interceptor;
     }
 
+    @Bean
+    WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                //registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+            }
+        };
+    }
+
     /**
      * 动态加载配置文件
      */
@@ -159,4 +170,5 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
         return tomcat;
 
     }
+
 }

@@ -1,9 +1,6 @@
 package cn.bukkit.sip.stronge;
 
-import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.config.StrongeConfig;
-
-import java.util.Map;
 
 public interface SapStronge {
     /**
@@ -32,9 +29,9 @@ public interface SapStronge {
      * 获取文件
      *
      * @param path 文件路径
-     * @return 文件数据
+     * @return 如果 isOrigin() 为 false 则返回 byte[]，否则返回外部地址
      */
-    byte[] getFile(String path);
+    Object getFile(String path);
 
     /**
      * 删除文件
@@ -45,11 +42,15 @@ public interface SapStronge {
     boolean deleteFile(String path);
 
     /**
-     * 获取存储配置
-     *
-     * @return 存储配置
+     * 是否为外部存储器
      */
-    Map<String, String> getConfig();
+    default boolean isOrigin() {
+        return false;
+    }
 
-    default void init(String name,StrongeConfig config){}
+    /**
+     * 传入StrongeConfig初始化存储器
+     */
+    default void init(String name, StrongeConfig config) {
+    }
 }

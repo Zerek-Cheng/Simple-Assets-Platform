@@ -1,6 +1,7 @@
 package cn.bukkit.sip.service;
 
 import cn.bukkit.sip.config.SapConfig;
+import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.stronge.SapStronge;
 import cn.bukkit.sip.stronge.local.LocalFileStronge;
 import lombok.Data;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Data
 @Component
@@ -47,5 +49,9 @@ public class StrongeService {
 
     public SapStronge getDefault() {
         return this.strongeMap.get(this.sapConfig.getStrongeType());
+    }
+
+    public SapStronge getImgStronge(ImgEntity imgEntity) {
+        return Optional.ofNullable(this.strongeMap.get(imgEntity.getStronge())).orElse(this.getDefault());
     }
 }

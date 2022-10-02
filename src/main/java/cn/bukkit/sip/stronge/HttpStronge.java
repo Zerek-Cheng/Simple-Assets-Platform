@@ -12,6 +12,4 @@ public abstract class HttpStronge implements NetStronge {
     public RestTemplate getHttpClient() {
         return httpClient;
     }
-
-    abstract String getFileOrigin(String path);
 }
