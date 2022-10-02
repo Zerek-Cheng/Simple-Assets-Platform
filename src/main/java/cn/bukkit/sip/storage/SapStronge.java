@@ -1,6 +1,6 @@
-package cn.bukkit.sip.stronge;
+package cn.bukkit.sip.storage;
 
-import cn.bukkit.sip.config.StrongeConfig;
+import cn.bukkit.sip.config.StorageConfig;
 
 public interface SapStronge {
     /**
@@ -51,6 +51,6 @@ public interface SapStronge {
     /**
      * 传入StrongeConfig初始化存储器
      */
-    default void init(String name, StrongeConfig config) {
+    default void init(String name, StorageConfig config) {
     }
 }

@@ -3,6 +3,13 @@
 #### **更加灵活的图片、静态资源存放浏览系统** / **More flexible image and static resource storage and browsing system**
 
 ---  
+![](https://github.com/Zerek-Cheng/Simple-Assets-Platform/raw/master/show.jpg)
+### **技术架构 / Technology Architecture**
+> * 前端 / Tempalte：
+>   * Vue.js + ElementUI
+> * 后端 / Backend：
+>   * Spring + MyBatis + MySQL/SQLITE + Redis + Flyway
+
 **Template Demo:**
 **[https://zerek-cheng.github.io/Simple-Assets-Platform/](https://zerek-cheng.github.io/Simple-Assets-Platform/)**  
 ***友情提示: 上为Github Pages，未架设后端程序，故只可预览界面***  
@@ -19,8 +26,6 @@
 ![](https://imgEntity.shields.io/github/languages/code-size/Zerek-Cheng/Simple-Assets-Platform?style=for-the-badge)
 ![](https://imgEntity.shields.io/github/stars/Zerek-Cheng/Simple-Assets-Platform?style=for-the-badge)
 ![](https://imgEntity.shields.io/github/license/Zerek-Cheng/Simple-Assets-Platform?style=for-the-badge)
-
-![](https://github.com/Zerek-Cheng/Simple-Assets-Platform/raw/master/show.jpg)
 
 ### 安装过程 / Install Steps：
 
@@ -57,17 +62,23 @@ web:
     - webp
     - svg
     - tiff
-  # 存储类型  local-file-本地存储
-  stronge-type: local-file
-  stronge-config:
+  # 默认存储类型  local-file-本地存储
+  storage-type: local-file
+  storage-config:
     local-file:
-      local-path: /tmp/
+      enabled: true
+      type: local-file
+      path: /tmp/
     qiniu:
+      enabled: false
+      type: qiniu
       access-key: xxx
       secret-key: xxx
       bucket: xxx
       domain: xxx
     aliyun:
+      enabled: false
+      type: aliyun
       access-key: xxx
       secret-key: xxx
       bucket: xxx
@@ -89,7 +100,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      # 使用jdbcUrl
+      # 使用jdbcUrl, 目前支持mysql(在5.7下测试通过)/sqlite
       url: jdbc:mysql://192.168.xxx.5:3306/spring?useUnicode=true&characterEncoding=utf-8&useSSL=false&useAffectedRows=true&serverTimezone=GMT%2B8
       username: xxxxxx
       password: xxxxxx
@@ -177,6 +188,7 @@ services:
     restart: always
     volumes:
       - ./sap-backend/application.yml:/app/config/application.yml
+      # ./files/:/tmp/
     networks:
       db:
         aliases:

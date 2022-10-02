@@ -16,6 +16,6 @@ public class SapConfig {
     private String backend;
     private String casdoorCallback;
     private List<String> allowUpload;
-    private String strongeType;
-    private Map<String, StrongeConfig> strongeConfig = new HashMap<>();
+    private String storageType = "local-file";
+    private Map<String, StorageConfig> storageConfig = new HashMap<>();
 }

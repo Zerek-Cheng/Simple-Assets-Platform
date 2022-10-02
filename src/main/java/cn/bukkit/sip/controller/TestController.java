@@ -44,6 +44,6 @@ public class TestController {
 
     @GetMapping("/test")
     public Object test() {
-        return config.getStrongeConfig();
+        return config.getStorageConfig();
     }
 }

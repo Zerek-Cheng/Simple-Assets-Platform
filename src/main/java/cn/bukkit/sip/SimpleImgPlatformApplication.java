@@ -12,8 +12,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -41,7 +45,7 @@ import java.time.Duration;
 import java.util.*;
 
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {FlywayAutoConfiguration.class})
 @EnableTransactionManagement
 @EnableScheduling
 @EnableCaching(proxyTargetClass = true)

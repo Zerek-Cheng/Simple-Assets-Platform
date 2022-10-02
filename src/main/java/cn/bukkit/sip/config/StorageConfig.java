@@ -3,7 +3,7 @@ package cn.bukkit.sip.config;
 import lombok.Data;
 
 @Data
-public class StrongeConfig {
+public class StorageConfig {
     private boolean enabled;
     private String type;
     private String path;

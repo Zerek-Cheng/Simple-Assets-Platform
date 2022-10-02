@@ -2,13 +2,14 @@ package cn.bukkit.sip.service;
 
 import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.orm.entity.ImgEntity;
-import cn.bukkit.sip.stronge.SapStronge;
-import cn.bukkit.sip.stronge.local.LocalFileStronge;
+import cn.bukkit.sip.storage.SapStronge;
+import cn.bukkit.sip.storage.local.LocalFileStronge;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -18,20 +19,11 @@ import java.util.Optional;
 @Data
 @Component
 @Slf4j
-public class StrongeService {
-    @Resource
-    SapConfig sapConfig;
-    private Map<String, Class<? extends SapStronge>> strongeClazz = new HashMap<>() {
-        {
-            put("local-file", LocalFileStronge.class);
-        }
-    };
+public class StrongeService implements ApplicationListener<ContextRefreshedEvent> {
 
-    private Map<String, SapStronge> strongeMap = new HashMap<>();
-
-    @PostConstruct
-    public void init() {
-        this.sapConfig.getStrongeConfig().forEach((sName, sConfig) -> {
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        this.sapConfig.getStorageConfig().forEach((sName, sConfig) -> {
             if (!sConfig.isEnabled()) return;
             try {
                 Class<? extends SapStronge> strongeClass = strongeClazz.get(sConfig.getType());
@@ -47,11 +39,22 @@ public class StrongeService {
         });
     }
 
+    @Resource
+    SapConfig sapConfig;
+    private Map<String, Class<? extends SapStronge>> strongeClazz = new HashMap<>() {
+        {
+            put("local-file", LocalFileStronge.class);
+        }
+    };
+
+    private Map<String, SapStronge> strongeMap = new HashMap<>();
+
     public SapStronge getDefault() {
-        return this.strongeMap.get(this.sapConfig.getStrongeType());
+        return this.strongeMap.get(this.sapConfig.getStorageType());
     }
 
     public SapStronge getImgStronge(ImgEntity imgEntity) {
-        return Optional.ofNullable(this.strongeMap.get(imgEntity.getStronge())).orElse(this.getDefault());
+        return Optional.ofNullable(this.strongeMap.get(imgEntity.getStorage())).orElse(this.getDefault());
     }
+
 }

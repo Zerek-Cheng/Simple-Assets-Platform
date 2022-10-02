@@ -1,4 +1,4 @@
-package cn.bukkit.sip.stronge;
+package cn.bukkit.sip.storage;
 
 public interface NetStronge extends SapStronge {
     /**

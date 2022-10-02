@@ -10,7 +10,7 @@ import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.orm.entity.UserEntity;
 import cn.bukkit.sip.pojo.ImgMetaDto;
 import cn.bukkit.sip.security.token.SapToken;
-import cn.bukkit.sip.stronge.SapStronge;
+import cn.bukkit.sip.storage.SapStronge;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -72,7 +72,9 @@ public class ImgService {
                 .name(fileUpload.getOriginalFilename())
                 .path(fileName).size((int) fileUpload.getSize())
                 .timesLimit(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getTimesLimit).orElse(0))
-                .owner(Optional.ofNullable(userEntity).map(UserEntity::getId).orElse("")).build();
+                .owner(Optional.ofNullable(userEntity).map(UserEntity::getId).orElse(""))
+                .storage(this.sapConfig.getStorageType())
+                .build();
         imgEntity.setDateLimitFromTimestamp(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getDateLimit).orElse(253402271999000L) / 1000);
         this.imgDaoService.saveOrUpdate(imgEntity);
         return imgEntity;

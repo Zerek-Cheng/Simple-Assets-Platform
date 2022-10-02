@@ -1,8 +1,8 @@
-package cn.bukkit.sip.stronge.local;
+package cn.bukkit.sip.storage.local;
 
-import cn.bukkit.sip.config.StrongeConfig;
+import cn.bukkit.sip.config.StorageConfig;
 import cn.bukkit.sip.exception.UploadException;
-import cn.bukkit.sip.stronge.LocalStronge;
+import cn.bukkit.sip.storage.LocalStronge;
 import cn.hutool.core.io.FileUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class LocalFileStronge extends LocalStronge {
     String name;
 
     @Override
-    public void init(String name, StrongeConfig config) {
+    public void init(String name, StorageConfig config) {
         super.init(name, config);
         this.localPath = config.getPath();
         this.name = name;

@@ -14,7 +14,7 @@
         <result column="limit_times" jdbcType="INTEGER" property="timesLimit"/>
         <result column="owner" jdbcType="VARCHAR" property="owner"/>
         <result column="deleted" jdbcType="TINYINT" property="isDeleted"/>
-        <result column="stronge" jdbcType="VARCHAR" property="stronge"/>
+        <result column="stronge" jdbcType="VARCHAR" property="storage"/>
         <association column="owner" property="userEntity"
                      javaType="cn.bukkit.sip.orm.entity.UserEntity"
                      select="cn.bukkit.sip.orm.mapper.UserMapper.selectById"/>
