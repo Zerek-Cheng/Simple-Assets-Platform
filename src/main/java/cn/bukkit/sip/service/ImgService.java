@@ -10,7 +10,7 @@ import cn.bukkit.sip.orm.entity.ImgEntity;
 import cn.bukkit.sip.orm.entity.UserEntity;
 import cn.bukkit.sip.pojo.ImgMetaDto;
 import cn.bukkit.sip.security.token.SapToken;
-import cn.bukkit.sip.storage.SapStronge;
+import cn.bukkit.sip.storage.SapStorage;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -42,7 +42,7 @@ public class ImgService {
     SapConfig sapConfig;
 
     @Resource
-    StrongeService strongeService;
+    StorageService storageService;
 
     @Resource
     ImgDaoService imgDaoService;
@@ -65,17 +65,18 @@ public class ImgService {
         if (this.sapConfig.getAllowUpload().stream().map((x) -> "." + x).noneMatch(fileType::equalsIgnoreCase))
             throw RestException.builder().message("不允许上传的文件类型").build();
         String fileName = new Date().getTime() + "-" + DigestUtil.md5Hex(fileUpload.getOriginalFilename()) + fileType;
-        if (this.strongeService.getDefault().isExist(fileName)) throw new UploadException("文件已存在");
-        this.strongeService.getDefault().saveFile(fileName, fileUpload.getBytes());
-        log.debug("上传文件:{}-{}-{}-{}", this.strongeService.getDefault().getName(), userEntity, fileName, fileUpload.getSize());
+        if (this.storageService.getDefault().isExist(fileName)) throw new UploadException("文件已存在");
+        this.storageService.getDefault().saveFile(fileName, fileUpload.getBytes());
+        log.debug("上传文件:{}-{}-{}-{}", this.storageService.getDefault().getName(), userEntity, fileName, fileUpload.getSize());
         ImgEntity imgEntity = ImgEntity.builder()
                 .name(fileUpload.getOriginalFilename())
                 .path(fileName).size((int) fileUpload.getSize())
-                .timesLimit(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getTimesLimit).orElse(0))
+                .timesLimit(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getTimesLimit).orElse(null))
                 .owner(Optional.ofNullable(userEntity).map(UserEntity::getId).orElse(""))
                 .storage(this.sapConfig.getStorageType())
                 .build();
-        imgEntity.setDateLimitFromTimestamp(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getDateLimit).orElse(253402271999000L) / 1000);
+        if (Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getDateLimit).orElse(null) != null)
+            imgEntity.setDateLimitFromTimestamp(imgMetaDto.getDateLimit() / 1000L);
         this.imgDaoService.saveOrUpdate(imgEntity);
         return imgEntity;
     }
@@ -89,7 +90,7 @@ public class ImgService {
     public Object loadImg(Long id) {
         ImgEntity imgEntity = this.imgDaoService.getById(id);
         if (imgEntity == null) throw new ImgNotExistException();
-        SapStronge stronge = this.strongeService.getImgStronge(imgEntity);
+        SapStorage stronge = this.storageService.getImgStronge(imgEntity);
         Object file = Optional.ofNullable(stronge).orElseThrow(StrongeNotExistException::new).getFile(imgEntity.getPath());
         if (file instanceof byte[]) return file;
         if (stronge.isOrigin() && file instanceof String && Pattern.matches("http(s)?://.*", (String) file))

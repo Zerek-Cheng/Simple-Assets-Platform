@@ -4,7 +4,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
-public abstract class HttpStronge implements NetStronge {
+public abstract class HttpStorage implements NetStorage {
     @Resource
     RestTemplate httpClient;
 

@@ -2,7 +2,7 @@ package cn.bukkit.sip.storage;
 
 import cn.bukkit.sip.config.StorageConfig;
 
-public interface SapStronge {
+public interface SapStorage {
     /**
      * @return 存储器的名称
      */

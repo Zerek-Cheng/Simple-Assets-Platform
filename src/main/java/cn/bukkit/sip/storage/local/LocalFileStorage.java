@@ -2,7 +2,7 @@ package cn.bukkit.sip.storage.local;
 
 import cn.bukkit.sip.config.StorageConfig;
 import cn.bukkit.sip.exception.UploadException;
-import cn.bukkit.sip.storage.LocalStronge;
+import cn.bukkit.sip.storage.LocalStorage;
 import cn.hutool.core.io.FileUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.io.File;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocalFileStronge extends LocalStronge {
+public class LocalFileStorage extends LocalStorage {
     String localPath;
     String name;
 

@@ -16,4 +16,6 @@ public class ImgMetaDto {
     private Long dateLimit;
     @Size(min = 0, max = 10000)
     private Integer timesLimit;
+
+    private String storage;
 }

@@ -1,6 +1,6 @@
 package cn.bukkit.sip.storage;
 
-public interface NetStronge extends SapStronge {
+public interface NetStorage extends SapStorage {
     /**
      * 获取接口网关地址
      *
