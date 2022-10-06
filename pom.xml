@@ -132,6 +132,13 @@
             <version>7.15.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.qiniu/qiniu-java-sdk -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>7.11.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

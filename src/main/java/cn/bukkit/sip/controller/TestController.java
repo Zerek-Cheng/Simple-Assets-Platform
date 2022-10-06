@@ -3,7 +3,7 @@ package cn.bukkit.sip.controller;
 import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.exception.RestException;
 import cn.bukkit.sip.pojo.RestData;
-import cn.bukkit.sip.service.ImgService;
+import cn.bukkit.sip.service.AssetsService;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +40,7 @@ public class TestController {
     }
 
     @Resource
-    ImgService imgService;
+    AssetsService assetsService;
 
     @GetMapping("/test")
     public Object test() {

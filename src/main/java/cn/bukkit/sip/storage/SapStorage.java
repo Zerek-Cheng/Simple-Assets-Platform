@@ -51,6 +51,7 @@ public interface SapStorage {
     /**
      * 传入StrongeConfig初始化存储器
      */
-    default void init(String name, StorageConfig config) {
+    default boolean init(String name, StorageConfig config) {
+        return false;
     }
 }

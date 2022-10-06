@@ -18,13 +18,13 @@ import java.io.File;
 @AllArgsConstructor
 public class LocalFileStorage extends LocalStorage {
     String localPath;
-    String name;
+    String name = "服务端存储";
 
     @Override
-    public void init(String name, StorageConfig config) {
+    public boolean init(String name, StorageConfig config) {
         super.init(name, config);
         this.localPath = config.getPath();
-        this.name = name;
+        return true;
     }
 
     @Override

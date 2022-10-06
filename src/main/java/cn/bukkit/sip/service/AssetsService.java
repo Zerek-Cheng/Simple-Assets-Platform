@@ -3,7 +3,7 @@ package cn.bukkit.sip.service;
 import cn.bukkit.sip.config.SapConfig;
 import cn.bukkit.sip.exception.ImgNotExistException;
 import cn.bukkit.sip.exception.RestException;
-import cn.bukkit.sip.exception.StrongeNotExistException;
+import cn.bukkit.sip.exception.StorageNotExistException;
 import cn.bukkit.sip.exception.UploadException;
 import cn.bukkit.sip.orm.ImgDaoService;
 import cn.bukkit.sip.orm.entity.ImgEntity;
@@ -31,12 +31,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 @Data
 @Slf4j
-public class ImgService {
+public class AssetsService {
 
     @Resource
     SapConfig sapConfig;
@@ -65,21 +64,25 @@ public class ImgService {
         if (this.sapConfig.getAllowUpload().stream().map((x) -> "." + x).noneMatch(fileType::equalsIgnoreCase))
             throw RestException.builder().message("不允许上传的文件类型").build();
         String fileName = new Date().getTime() + "-" + DigestUtil.md5Hex(fileUpload.getOriginalFilename()) + fileType;
-        if (this.storageService.getDefault().isExist(fileName)) throw new UploadException("文件已存在");
-        this.storageService.getDefault().saveFile(fileName, fileUpload.getBytes());
+        String storageName = Optional.ofNullable(imgMetaDto.getStorage()).orElse(this.sapConfig.getStorageType());
+        if (this.storageService.getStorage(storageName) == null)
+            throw RestException.builder().message("存储器不存在").build();
+        if (this.storageService.getStorage(storageName).isExist(fileName)) throw new UploadException("文件已存在");
+        this.storageService.getStorage(storageName).saveFile(fileName, fileUpload.getBytes());
         log.debug("上传文件:{}-{}-{}-{}", this.storageService.getDefault().getName(), userEntity, fileName, fileUpload.getSize());
         ImgEntity imgEntity = ImgEntity.builder()
                 .name(fileUpload.getOriginalFilename())
                 .path(fileName).size((int) fileUpload.getSize())
-                .timesLimit(Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getTimesLimit).orElse(null))
+                .timesLimit(imgMetaDto.getTimesLimit())
                 .owner(Optional.ofNullable(userEntity).map(UserEntity::getId).orElse(""))
-                .storage(this.sapConfig.getStorageType())
+                .storage(storageName)
                 .build();
-        if (Optional.ofNullable(imgMetaDto).map(ImgMetaDto::getDateLimit).orElse(null) != null)
+        if (imgMetaDto.getDateLimit() != null)
             imgEntity.setDateLimitFromTimestamp(imgMetaDto.getDateLimit() / 1000L);
         this.imgDaoService.saveOrUpdate(imgEntity);
         return imgEntity;
     }
+
 
     /**
      * 获取图片
@@ -90,12 +93,8 @@ public class ImgService {
     public Object loadImg(Long id) {
         ImgEntity imgEntity = this.imgDaoService.getById(id);
         if (imgEntity == null) throw new ImgNotExistException();
-        SapStorage stronge = this.storageService.getImgStronge(imgEntity);
-        Object file = Optional.ofNullable(stronge).orElseThrow(StrongeNotExistException::new).getFile(imgEntity.getPath());
-        if (file instanceof byte[]) return file;
-        if (stronge.isOrigin() && file instanceof String && Pattern.matches("http(s)?://.*", (String) file))
-            return "redirect:" + file;
-        return file;
+        SapStorage storage = Optional.ofNullable(this.storageService.getStorage(imgEntity)).orElseThrow(StorageNotExistException::new);
+        return this.storageService.isFileExist(imgEntity) ? storage.getFile(imgEntity.getPath()) : null;
     }
 
     /**

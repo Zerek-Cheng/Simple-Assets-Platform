@@ -2,6 +2,8 @@ package cn.bukkit.sip.config;
 
 import lombok.Data;
 
+import java.util.HashMap;
+
 @Data
 public class StorageConfig {
     private boolean enabled;
@@ -11,4 +13,5 @@ public class StorageConfig {
     private String secretKey;
     private String bucket;
     private String domain;
+    private HashMap<String, String> meta;
 }

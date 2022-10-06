@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MyBatisCodeHelperDatasource">
+    <option name="projectProfile">
+      <ProjectProfile>
+        <option name="addSerializeUid" value="true" />
+        <option name="controllerTemplateString" value="&#10;#* @vtlvariable name=&quot;tableName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;entityPackageName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;entityClassName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;servicePackageName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;serviceInterfacePackage&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;serviceClassName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;serviceInterfaceClassName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;mapperPackageName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;mapperClassName&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;controllerPackage&quot; type=&quot;java.lang.String&quot; *#&#10;#* @vtlvariable name=&quot;tableRemark&quot; type=&quot;java.lang.String&quot; *#&#10;package $!{controllerPackage};&#10;import $!{entityPackageName}.$!{entityClassName};&#10;#set($realServiceName = $!{serviceClassName}+'Impl')&#10;import $!{servicePackageName}.$!{realServiceName};&#10;import org.springframework.web.bind.annotation.*;&#10;&#10;#set($serviceFirstLower = $!{serviceClassName.substring(0,1).toLowerCase()}+$!{serviceClassName.substring(1,$!{serviceClassName.length()})})&#10;import javax.annotation.Resource;&#10;&#10;/**&#10;* $!{info.tableRemarks}($!{tableName})表控制层&#10;*&#10;* @author xxxxx&#10;*/&#10;@RestController&#10;@RequestMapping(&quot;/$!{tableName}&quot;)&#10;public class $!{entityClassName}Controller {&#10;/**&#10;* 服务对象&#10;*/&#10;@Resource&#10;private $!{serviceClassName} $!{serviceFirstLower};&#10;&#10;/**&#10;* 通过主键查询单条数据&#10;*&#10;* @param id 主键&#10;* @return 单条数据&#10;*/&#10;@GetMapping(&quot;selectOne&quot;)&#10;public $!{entityClassName} selectOne(Integer id) {&#10;return $!{serviceFirstLower}.selectByPrimaryKey(id);&#10;}&#10;&#10;}" />
+        <option name="generateService" value="true" />
+        <option name="javaMapperPackage" value="cn.bukkit.sip.orm.mapper" />
+        <option name="javaMapperPath" value="$PROJECT_DIR$/src/main/java" />
+        <option name="javaModelPackage" value="cn.bukkit.sip.orm.entity" />
+        <option name="javaModelPath" value="$PROJECT_DIR$/src/main/java" />
+        <option name="lastDatabaseCrudChooseModuleName" value="SimpleImgPlatform" />
+        <option name="lombokAllArgConstructor" value="true" />
+        <option name="lombokBuilderAnnotation" value="true" />
+        <option name="lombokDataAnnotation" value="true" />
+        <option name="lombokNoArgsConstructor" value="true" />
+        <option name="mapperAnnotaion" value="true" />
+        <option name="modelAddToString" value="true" />
+        <option name="moduleNameToPackageAndPathMap">
+          <map>
+            <entry key="SimpleImgPlatform">
+              <value>
+                <UserPackageAndPathInfoByModule>
+                  <option name="javaMapperPackage" value="cn.bukkit.sip.orm.mapper" />
+                  <option name="javaMapperPath" value="$PROJECT_DIR$/src/main/java" />
+                  <option name="javaModelPacakge" value="cn.bukkit.sip.orm.entity" />
+                  <option name="javaModelPath" value="$PROJECT_DIR$/src/main/java" />
+                  <option name="javaServicePackage" value="cn.bukkit.sip.orm" />
+                  <option name="javaServicePath" value="$PROJECT_DIR$/src/main/java" />
+                  <option name="xmlPackage" value="mapper" />
+                  <option name="xmlPath" value="$PROJECT_DIR$/src/main/resources" />
+                </UserPackageAndPathInfoByModule>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="mybatisPlusStaticField" value="false" />
+        <option name="tableGenerateConfigs">
+          <map>
+            <entry key="spring:imgs">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="" />
+                  <option name="javaModelName" value="Imgs" />
+                  <option name="moduleName" value="SimpleImgPlatform" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="spring:user">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="" />
+                  <option name="javaModelName" value="User" />
+                  <option name="moduleName" value="SimpleImgPlatform" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="userMybatisPlus" value="true" />
+        <option name="xmlMapperPackage" value="mapper" />
+        <option name="xmlMapperPath" value="$PROJECT_DIR$/src/main/resources" />
+      </ProjectProfile>
+    </option>
+  </component>
+</project>

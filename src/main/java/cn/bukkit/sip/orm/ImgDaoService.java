@@ -52,6 +52,12 @@ public class ImgDaoService extends ServiceImpl<ImgMapper, ImgEntity> {
         return super.updateBatchById(entityList);
     }
 
+    @Override
+    @CacheEvict(value = "img-exist", key = "#id")
+    public boolean removeById(Serializable id) {
+        return super.removeById(id);
+    }
+
     @CacheEvict(value = "img", key = "#id")
     public void cleanCache(Serializable id) {
     }

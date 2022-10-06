@@ -133,15 +133,15 @@ public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
         return interceptor;
     }
 
-    @Bean
-    WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addInterceptors(InterceptorRegistry registry) {
-                //registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
-            }
-        };
-    }
+//    @Bean
+//    WebMvcConfigurer webMvcConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addInterceptors(InterceptorRegistry registry) {
+//                //registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+//            }
+//        };
+//    }
 
     /**
      * 动态加载配置文件

@@ -11,7 +11,7 @@ web:
     - webp
     - svg
     - tiff
-  # 默认存储类型  local-file-本地存储
+  # 默认存储类型  local-file-本地存储  qiniu-七牛云
   storage-type: local-file
   storage-config:
     local-file:
