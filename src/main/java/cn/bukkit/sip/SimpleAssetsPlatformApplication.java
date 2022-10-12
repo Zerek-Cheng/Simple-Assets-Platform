@@ -34,8 +34,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -49,10 +47,10 @@ import java.util.*;
 @EnableAsync(proxyTargetClass = true)
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 60 * 24 * 31)
 @Slf4j
-public class SimpleImgPlatformApplication implements EnvironmentPostProcessor {
+public class SimpleAssetsPlatformApplication implements EnvironmentPostProcessor {
 
     public static void main(String[] args) {
-        SpringApplication.run(SimpleImgPlatformApplication.class, args);
+        SpringApplication.run(SimpleAssetsPlatformApplication.class, args);
     }
 
     @Bean

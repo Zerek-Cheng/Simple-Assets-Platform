@@ -39,9 +39,6 @@ public class TestController {
         return builder.build();
     }
 
-    @Resource
-    AssetsService assetsService;
-
     @GetMapping("/test")
     public Object test() {
         return config.getStorageConfig();

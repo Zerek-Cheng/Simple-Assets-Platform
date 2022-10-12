@@ -10,7 +10,7 @@
 # supported CodeQL languages.
 #
 name: "CodeQL"
-
+run-name: "CodeQL  ${{ github.sha }}"
 on:
   push:
     branches: [ "master" ]

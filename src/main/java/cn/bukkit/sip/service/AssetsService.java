@@ -59,7 +59,7 @@ public class AssetsService {
      * @param imgMetaDto 图片信息
      * @return 图片信息
      */
-    public ImgEntity uploaderImg(MultipartFile fileUpload, UserEntity userEntity, ImgMetaDto imgMetaDto) throws RestException, IOException {
+    public ImgEntity uploadAsset(MultipartFile fileUpload, UserEntity userEntity, ImgMetaDto imgMetaDto) throws RestException, IOException {
         String fileType = Objects.requireNonNull(fileUpload.getOriginalFilename()).substring(fileUpload.getOriginalFilename().lastIndexOf("."));
         if (this.sapConfig.getAllowUpload().stream().map((x) -> "." + x).noneMatch(fileType::equalsIgnoreCase))
             throw RestException.builder().message("不允许上传的文件类型").build();
@@ -90,7 +90,7 @@ public class AssetsService {
      * @param id 图片id
      * @return 图片
      */
-    public Object loadImg(Long id) {
+    public Object loadAsset(Long id) {
         ImgEntity imgEntity = this.imgDaoService.getById(id);
         if (imgEntity == null) throw new ImgNotExistException();
         SapStorage storage = Optional.ofNullable(this.storageService.getStorage(imgEntity)).orElseThrow(StorageNotExistException::new);
@@ -102,7 +102,7 @@ public class AssetsService {
      *
      * @return 图片
      */
-    public byte[] loadUnknownImg() {
+    public byte[] loadUnknownAsset() {
         return FileUtil.readBytes(new ClassPathResource("unknown.png").getFile());
     }
 

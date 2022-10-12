@@ -33,7 +33,7 @@ public class UploadController {
     public RestData upload(@RequestPart(value = "file") MultipartFile fileReq,
                            ImgMetaDto imgMetaDto,
                            SapToken token) {
-        ImgEntity imgEntity = assetsService.uploaderImg(fileReq, userDaoService.getById(token.getPrincipal().getId()), imgMetaDto);
+        ImgEntity imgEntity = assetsService.uploadAsset(fileReq, userDaoService.getById(token.getPrincipal().getId()), imgMetaDto);
         imgEntity.setIsPublic(Optional.ofNullable(imgMetaDto.getIsPublic()).orElse(true));
         this.assetsService.getImgDaoService().updateById(imgEntity);
         return RestData.builder().data(imgEntity).build();

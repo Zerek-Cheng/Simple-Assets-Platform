@@ -1,2 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
-	cn.bukkit.sip.SimpleImgPlatformApplication
+	cn.bukkit.sip.SimpleAssetsPlatformApplication

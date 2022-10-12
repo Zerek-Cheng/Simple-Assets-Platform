@@ -1,4 +1,5 @@
 name: Docker Build
+run-name: Docker Build ${{ github.sha }}
 
 env:
   REGISTRY: ghcr.io

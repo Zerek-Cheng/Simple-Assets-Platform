@@ -47,12 +47,12 @@ public class ImgController {
             if (this.assetsService.permissionCheck(imgEntity, authentication) ||
                     this.assetsService.limitCheck(imgEntity)) {
                 this.assetsService.addTimes(imgEntity.getId());
-                img = assetsService.loadImg(id);
+                img = assetsService.loadAsset(id);
             }
         } catch (RestException e) {
             log.debug(e.getMessage());
         } finally {
-            if (img == null) img = assetsService.loadUnknownImg();
+            if (img == null) img = assetsService.loadUnknownAsset();
         }
         if (img instanceof String) return new RedirectView((String) img);
         if (img instanceof byte[]) {

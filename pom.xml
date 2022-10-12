@@ -16,6 +16,7 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+    <packaging>jar</packaging>
     <dependencies>
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
@@ -138,7 +139,12 @@
             <artifactId>qiniu-java-sdk</artifactId>
             <version>7.11.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -180,7 +186,7 @@
                             <addClasspath>true</addClasspath>
                             <!--jar包不包含唯一版本标识-->
                             <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>cn.bukkit.sip.SimpleImgPlatformApplication</mainClass>
+                            <mainClass>cn.bukkit.sip.SimpleAssetsPlatformApplication</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>./config/</Class-Path>
