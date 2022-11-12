@@ -1,3 +1,5 @@
+# 最近工作有点忙，空下来继续更新
+
 # 静态资源托管系统/图床系统 / Simple Assets Platform
 
 #### **更加灵活的图片、静态资源存放浏览系统** / **More flexible image and static resource storage and browsing system**
